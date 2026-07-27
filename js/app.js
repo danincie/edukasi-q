@@ -6,7 +6,7 @@
 
 class EdukasiApp {
   constructor() {
-    this.facts = window.FACTS_DATABASE || [];
+    this.facts = (typeof FACTS_DATABASE !== 'undefined' ? FACTS_DATABASE : window.FACTS_DATABASE) || [];
     this.theme = this.loadLocalStorage('edukasiq_theme', 'dark');
     this.soundEnabled = this.loadLocalStorage('edukasiq_sound', true);
 

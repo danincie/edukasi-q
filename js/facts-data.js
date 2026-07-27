@@ -4,7 +4,7 @@
  * Data terverifikasi dan bergizi ilmu untuk generasi muda & khalayak umum.
  */
 
-const FACTS_DATABASE = [
+var FACTS_DATABASE = [
   // ==========================================
   // KATEGORI 1: SAINS & TEKNOLOGI
   // ==========================================
@@ -1070,7 +1070,7 @@ Cara kerjanya: Begitu menerima uang, langsung bagi menjadi 3 pos:
     categoryName: "Literasi Keuangan & Digital",
     icon: "🎣",
     shortSummary: "Lebih dari 80% peretasan akun media sosial dan m-banking berawal dari teknik pengelabuan psikologis yang disebut Phishing.",
-    fullExplanation: `Pernahkah kamu menerima pesan WhatsApp, SMS, atau email yang menyatakan: *"Selamat! Anda memenangkan undian Rp 50 Juta dari Bank X, klik link ini untuk klaim hadiah"* atau pesan undangan pernikahan dari nomor tak dikenal dalam format file `.APK`? Waspadalah, itu adalah kejahatan siber bernama **Phishing**!
+    fullExplanation: `Pernahkah kamu menerima pesan WhatsApp, SMS, atau email yang menyatakan: *"Selamat! Anda memenangkan undian Rp 50 Juta dari Bank X, klik link ini untuk klaim hadiah"* atau pesan undangan pernikahan dari nomor tak dikenal dalam format file ".APK"? Waspadalah, itu adalah kejahatan siber bernama **Phishing**!
 
 Phishing (berasal dari kata *fishing* / memancing) adalah teknik penipuan digital di mana pelaku menyamar sebagai lembaga resmi, bank, atau teman dekat untuk memancing korban agar menyerahkan data rahasia seperti Password, PIN, kode OTP (One Time Password), atau menginstal aplikasi penguras rekening. Ingat aturan emas keamanan siber: **Bank resmi atau institusi pemerintah TIDAK AKAN PERNAH meminta kode OTP atau PIN Anda melalui pesan chat atau telepon!**`,
     funFact: "Kode OTP (One Time Password) ibarat kunci emas rumahmu! Jika ada orang yang meminta kode OTP berdigit angka yang masuk via SMS/WhatsApp dengan alasan apapun, 100% dipastikan itu adalah penipu!",
