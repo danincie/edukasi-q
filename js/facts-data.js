@@ -881,7 +881,7 @@ Pahlawan tak kasat mata di balik suplai napas kita ini adalah Fitoplankton—yai
     fullExplanation: `Rafflesia arnoldii (sering disapa Bunga Padma Raksasa) adalah bunga tunggal terbesar di planet Bumi yang merupakan pusaka keanekaragaman hayati Indonesia, khususnya ditemukan di hutan hujan tropis Sumatera dan Kalimantan (seperti Bengkulu).
 
 Keunikan bunga langka ini sangat aneh dan menakjubkan: Rafflesia arnoldii adalah tumbuhan parasit sempurna (holoparasit) yang tidak memiliki daun, tidak memiliki batang, tidak memiliki akar sejati, dan tidak mampu melakukan fotosintesis! Ia hidup di dalam jaringan tumbuhan merambat Tetrastigma. Ketika mekar sempurna (yang hanya berlangsung 5 sampai 7 hari sebelum layu mati), diameternya bisa mencapai 1 meter dengan bobot 11 kilogram!`,
-    funFact: "Jangan samakan Rafflesia arnoldii dengan Bunga Bangkai (Amorphophallus titanum)! Meskipun keduanya sama-sama mengeluarkan bau busuk untuk menarik lalat penyerbuk dan asli Indonesia, Rafflesia melebar ke samping (bunga tunggal terbesar), sedangkan Bunga Bangkai tumbuh menjulang tinggi ke atas (bunga majemuk tertinggi di dunia)!`,
+    funFact: "Jangan samakan Rafflesia arnoldii dengan Bunga Bangkai (Amorphophallus titanum)! Meskipun keduanya sama-sama mengeluarkan bau busuk untuk menarik lalat penyerbuk dan asli Indonesia, Rafflesia melebar ke samping (bunga tunggal terbesar), sedangkan Bunga Bangkai tumbuh menjulang tinggi ke atas (bunga majemuk tertinggi di dunia)!",
     source: "BRIN / LIPI & Kebun Raya Bogor",
     quiz: [
       {
@@ -1224,7 +1224,7 @@ Pakar keuangan OJK mengingatkan: Sebelum berinvestasi di instrumen berisiko apa 
 
 Peretas modern tidak menebak kata sandimu satu per satu secara manual. Mereka menggunakan program komputer *Brute Force* yang mampu mencoba jutaan kombinasi kata sandi dalam satu detik! Kata sandi pendek seperti "123456" atau "budi1995" dapat dibobol komputer peretas dalam waktu kurang dari 1 detik! 
 
-Untuk mengamankan akun pentingmu (email, m-banking, media sosial), gunakan metode *Passphrase* (gabungan 3-4 kata acak yang panjang seperti `KucingMelompatLangitBiru99!`) dan wajib aktifkan **Autentikasi Dua Faktor (2FA)**!`,
+Untuk mengamankan akun pentingmu (email, m-banking, media sosial), gunakan metode *Passphrase* (gabungan 3-4 kata acak yang panjang seperti "KucingMelompatLangitBiru99!") dan wajib aktifkan **Autentikasi Dua Faktor (2FA)**!`,
     funFact: "Dengan mengaktifkan Autentikasi Dua Faktor (2FA), meskipun seorang peretas berhasil mengetahui passwordmu, mereka tetap tidak bisa masuk ke akunmu karena membutuhkan kode verifikasi kedua yang hanya ada di ponsel genggammu!",
     source: "Cybersecurity & Infrastructure Security Agency (CISA) & NordPass",
     quiz: [
