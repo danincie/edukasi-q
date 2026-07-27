@@ -56,13 +56,14 @@
     <main>
       <section id="reader-section">
         
-        <!-- Top Action Bar (Acak Tombol Utama) -->
-        <div style="text-align: center; margin-bottom: 24px;">
-          <button id="scanRandomBtn" class="btn-primary" style="background: var(--accent-gradient); color: #fff; border: none; font-size: 1.15rem; font-weight: 800; padding: 16px 36px; border-radius: 99px; box-shadow: 0 10px 30px rgba(0,242,254,0.4); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: inline-flex; align-items: center; gap: 12px;">
-            <span style="font-size: 1.4rem;">🎲</span> Acak Ilmu Berikutnya!
+        <!-- Top Action Bar (Tombol Eksplorasi Utama Profesional) -->
+        <div style="text-align: center; margin-bottom: 28px;">
+          <button id="scanRandomBtn" class="btn-primary" style="background: var(--accent-gradient); color: #fff; border: none; font-size: 1.05rem; font-weight: 700; padding: 16px 36px; border-radius: 99px; box-shadow: 0 10px 30px rgba(0,242,254,0.3); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: inline-flex; align-items: center; gap: 12px; letter-spacing: 0.5px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+            <span>Eksplorasi Wawasan Berikutnya</span>
           </button>
-          <div style="font-size: 0.85rem; color: var(--text-tertiary); margin-top: 10px;">
-            Tekan tombol di atas atau scan ulang barcode untuk mendapatkan pengetahuan baru lainnya
+          <div style="font-size: 0.85rem; color: var(--text-tertiary); margin-top: 12px; letter-spacing: 0.3px;">
+            Tekan tombol di atas atau lakukan pemindaian ulang QR Code untuk memperoleh literasi ilmiah terverifikasi lainnya
           </div>
         </div>
 
@@ -73,13 +74,15 @@
 
       </section>
     </main>
-
+    
     <!-- FOOTER MINIMALIS & BERSIH (TIDAK MENCOLOK) -->
-    <footer style="margin-top: 50px; text-align: center; border-top: 1px solid var(--glass-border); padding-top: 24px; color: var(--text-tertiary); font-size: 0.95rem;">
-      <p style="margin: 0; font-weight: 600; color: var(--text-secondary);">
-        EdukasiQ <span style="margin: 0 6px; color: var(--text-tertiary);">•</span> 
+    <footer style="margin-top: 60px; text-align: center; border-top: 1px solid var(--glass-border); padding-top: 24px; padding-bottom: 30px; color: var(--text-tertiary); font-size: 0.9rem;">
+      <p style="margin: 0; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span>EdukasiQ</span>
+        <span style="color: var(--text-tertiary);">•</span> 
         <a href="#qr-studio" id="openQrModalBtn" style="color: var(--accent-primary); text-decoration: none; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-          <span>🔗</span> Bagikan / Share
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+          <span>Bagikan Portal</span>
         </a>
       </p>
     </footer>

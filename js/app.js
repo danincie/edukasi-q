@@ -199,56 +199,60 @@ class EdukasiApp {
     const briefText = (fact.fullExplanation || '').split('\n\n')[0].split('\n')[0];
 
     return `
-      <article class="featured-fact-card" style="width: 100%; max-width: 1200px; margin: 0 auto; padding: 44px 4vw; border: 1px solid var(--glass-border); border-radius: 28px; background: var(--glass-bg); backdrop-filter: blur(24px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); transition: all 0.3s ease;">
+      <article class="featured-fact-card" style="width: 100%; max-width: 1150px; margin: 0 auto; padding: 46px 4.5vw; border: 1px solid var(--glass-border); border-radius: 28px; background: var(--glass-bg); backdrop-filter: blur(28px); box-shadow: 0 25px 60px rgba(0,0,0,0.5); transition: all 0.3s ease;">
         
-        <!-- Header Bar: Kategori & Sumber Referensi -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
-          <span class="category-badge badge-${fact.category}" style="font-size: 0.9rem; padding: 8px 18px; border-radius: 99px;">
-            <span>${fact.icon}</span> ${fact.categoryName}
+        <!-- Header Bar: Akreditasi & Referensi Ilmiah -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 14px;">
+          <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #00F2FE; background: rgba(0, 242, 254, 0.08); padding: 7px 18px; border-radius: 6px; border: 1px solid rgba(0, 242, 254, 0.25);">
+            BIDANG: ${fact.categoryName.toUpperCase()}
           </span>
-          <span style="font-size:0.85rem; font-weight:700; color:var(--text-tertiary); background: rgba(255,255,255,0.06); padding: 6px 16px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
-            <span style="color:#10b981;">✔</span> Terverifikasi: <b style="color:var(--text-secondary); font-weight:600;">${fact.source}</b>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); background: rgba(255, 255, 255, 0.04); padding: 7px 18px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1); display: inline-flex; align-items: center; gap: 8px;">
+            <span style="display:inline-block; width:8px; height:8px; background:#10b981; border-radius:50%; box-shadow: 0 0 10px #10b981;"></span>
+            Referensi Valid: <strong style="color: #fff; font-weight: 700;">${fact.source}</strong>
           </span>
         </div>
 
         <!-- Judul Fakta yang Kuat & Jelas -->
-        <h2 class="card-title" style="font-size: 2.2rem; font-weight: 800; line-height: 1.25; margin-bottom: 24px; color: var(--text-primary); letter-spacing: -0.5px;">
+        <h1 class="card-title" style="font-size: 2.3rem; font-weight: 800; line-height: 1.28; margin-bottom: 26px; color: var(--text-primary); letter-spacing: -0.5px;">
           ${fact.title}
-        </h2>
+        </h1>
         
-        <!-- Inti Wawasan / Quote (Fokus Utama) -->
-        <div style="font-size: 1.25rem; color: #fff; font-weight: 600; line-height: 1.6; margin-bottom: 24px; padding: 22px 26px; background: linear-gradient(135deg, rgba(0,242,254,0.12) 0%, rgba(37,99,235,0.08) 100%); border-left: 5px solid #00F2FE; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,242,254,0.05);">
-          💡 "${fact.shortSummary}"
-        </div>
+        <!-- Inti Wawasan / Quote (Fokus Utama Tanpa Emoji) -->
+        <blockquote style="margin: 0 0 28px 0; padding: 22px 28px; background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(37, 99, 235, 0.04) 100%); border-left: 4px solid #00F2FE; border-radius: 0 16px 16px 0; font-size: 1.2rem; color: #fff; font-weight: 600; line-height: 1.65; font-style: italic;">
+          "${fact.shortSummary}"
+        </blockquote>
 
         <!-- Ringkasan Padat / Penjelasan Singkat -->
-        <p style="font-size: 1.1rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 30px;">
+        <div style="font-size: 1.1rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 32px;">
           ${briefText}
-        </p>
+        </div>
 
         <!-- Pilihan Opsi: Baca Penjelasan Mendalam (Collapse/Expand) -->
-        <details style="margin-bottom: 32px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px 20px;">
-          <summary style="cursor: pointer; font-size: 0.95rem; font-weight: 700; color: #00F2FE; outline: none; list-style: none; display: flex; align-items: center; gap: 8px;">
-            <span>📖 Baca Penjelasan Selengkapnya & Fakta Unik ▾</span>
+        <details style="margin-bottom: 36px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: 16px; padding: 18px 22px; transition: background 0.3s;">
+          <summary style="cursor: pointer; font-size: 0.92rem; font-weight: 700; color: #00F2FE; outline: none; list-style: none; display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
+            <span>BACA ANALISIS ILMIAH & PENJELASAN MENDALAM</span>
+            <span style="font-size: 1.2rem; transition: transform 0.2s;">▾</span>
           </summary>
-          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8; white-space: pre-line;">
+          <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 1.05rem; color: var(--text-secondary); line-height: 1.85; white-space: pre-line;">
             ${fact.fullExplanation}
             
-            <div style="margin-top: 20px; background: rgba(254, 225, 64, 0.08); border-left: 4px solid #fee140; padding: 14px 18px; border-radius: 8px;">
-              <b style="color: #fee140;">⚡ Tahukah Kamu?</b><br>
-              <span style="color: var(--text-primary); font-weight: 600;">${fact.funFact}</span>
+            <div style="margin-top: 24px; background: rgba(255, 255, 255, 0.03); border-left: 3px solid #60a5fa; padding: 16px 20px; border-radius: 0 10px 10px 0;">
+              <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: #60a5fa; font-weight: 700; margin-bottom: 6px;">Catatan Kritis & Analisis Tambahan</div>
+              <div style="color: var(--text-primary); font-weight: 500; font-size: 0.98rem; line-height: 1.6;">${fact.funFact}</div>
             </div>
           </div>
         </details>
 
-        <!-- Action Bar: Simpel, Bersih, Profesional -->
+        <!-- Action Bar: Simpel, Bersih, Profesional dengan SVG Icon -->
         <div style="display: flex; gap: 14px; flex-wrap: wrap; border-top: 1px solid var(--glass-border); padding-top: 24px;">
-          <button id="tts-btn-${fact.id}" class="btn-secondary btn-tts-scan" style="padding: 12px 24px; font-size: 0.95rem; border-color: #00f2fe; color: #00f2fe; background: rgba(0,242,254,0.08); font-weight: 700; border-radius: 12px;">
-            <span>🔊</span> Dengarkan Suara
+          <button id="tts-btn-${fact.id}" class="btn-secondary btn-tts-scan" style="padding: 12px 24px; font-size: 0.92rem; border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; background: rgba(0, 242, 254, 0.05); font-weight: 600; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            <span>Dengarkan Narasi</span>
           </button>
           
-          <button class="btn-secondary btn-share" data-id="${fact.id}" style="padding: 12px 24px; font-size: 0.95rem; font-weight: 700; border-radius: 12px;">
-            <span>📢</span> Bagikan Ilmu Ini
+          <button class="btn-secondary btn-share" data-id="${fact.id}" style="padding: 12px 24px; font-size: 0.92rem; font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; background: rgba(255, 255, 255, 0.05); border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            <span>Bagikan Wawasan</span>
           </button>
         </div>
 
