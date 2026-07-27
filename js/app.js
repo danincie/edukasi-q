@@ -12,6 +12,7 @@ class EdukasiApp {
 
     this.lastRandomId = null;
     this.audioCtx = null;
+    this.shuffleDeck = [];
 
     this.init();
   }
@@ -177,12 +178,24 @@ class EdukasiApp {
       }
     }
 
-    // Pilih fakta acak yang berbeda dari sebelumnya agar selalu fresh
-    let availableFacts = this.facts.filter(f => f.id !== this.lastRandomId);
-    if (availableFacts.length === 0) availableFacts = this.facts;
+    // Algoritma Smart Shuffle Deck (Anti-Pengulangan 0% Duplikasi):
+    // Jika tumpukan kartu habis atau belum dibuat, isi ulang dengan seluruh fakta dan kocok secara acak (Fisher-Yates Shuffle)
+    if (!this.shuffleDeck || this.shuffleDeck.length === 0) {
+      this.shuffleDeck = [...this.facts];
+      for (let i = this.shuffleDeck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [this.shuffleDeck[i], this.shuffleDeck[j]] = [this.shuffleDeck[j], this.shuffleDeck[i]];
+      }
+      // Pastikan fakta pertama di putaran baru tidak sama dengan fakta terakhir yang baru saja dibaca
+      if (this.shuffleDeck.length > 1 && this.shuffleDeck[this.shuffleDeck.length - 1].id === this.lastRandomId) {
+        // Tukar kartu teratas dengan kartu di bawahnya
+        const topIdx = this.shuffleDeck.length - 1;
+        [this.shuffleDeck[topIdx], this.shuffleDeck[0]] = [this.shuffleDeck[0], this.shuffleDeck[topIdx]];
+      }
+    }
 
-    const randomIndex = Math.floor(Math.random() * availableFacts.length);
-    const fact = availableFacts[randomIndex];
+    // Ambil fakta teratas dari dek kartu yang sudah dikocok
+    const fact = this.shuffleDeck.pop();
     this.lastRandomId = fact.id;
 
     // Hentikan suara jika sedang berbicara
