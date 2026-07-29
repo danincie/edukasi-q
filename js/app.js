@@ -249,7 +249,7 @@ class EdukasiApp {
               <div style="color: var(--text-primary); font-weight: 500; font-size: clamp(0.9rem, 2.8vw, 0.95rem); line-height: 1.6;">${fact.funFact}</div>
             </div>
             
-            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px dashed rgba(255,255,255,0.1);">
+            <div style="margin-top: 16px; opacity: 0.85;">
               <div class="reference-badge" onclick="this.classList.toggle('expanded')" title="Ketuk untuk melihat full referensi">
                 <div class="reference-content">
                   <span class="reference-text">Referensi Valid: <a href="https://www.google.com/search?q=${encodeURIComponent(fact.source + ' ' + fact.title)}" target="_blank" onclick="event.stopPropagation()" title="Buka sumber referensi di tab baru" style="color: #fff; font-weight: 700; text-decoration: none;">${fact.source}</a></span>
@@ -287,22 +287,21 @@ class EdukasiApp {
     if (marqueeContainer && marqueeText) {
       // Gunakan setTimeout agar browser selesai me-render dan menghitung layout
       setTimeout(() => {
-        // Lepas batasan flexbox sementara dengan absolute & auto untuk mendapatkan lebar teks asli
-        const originalWidth = marqueeText.style.width;
-        const originalPos = marqueeText.style.position;
-        marqueeText.style.width = 'auto';
-        marqueeText.style.position = 'absolute';
+        // Buat clone rahasia tanpa batasan CSS untuk mengukur dimensi asli teks secara 100% akurat
+        const clone = marqueeText.cloneNode(true);
+        clone.style.position = 'absolute';
+        clone.style.visibility = 'hidden';
+        clone.style.width = 'auto';
+        clone.style.whiteSpace = 'nowrap';
+        document.body.appendChild(clone);
         
-        const realWidth = marqueeText.scrollWidth;
-        
-        // Kembalikan style
-        marqueeText.style.width = originalWidth;
-        marqueeText.style.position = originalPos;
+        const realWidth = clone.clientWidth;
+        document.body.removeChild(clone);
 
         if (realWidth > marqueeContainer.clientWidth) {
           marqueeContainer.classList.add('is-running');
         }
-      }, 100);
+      }, 50);
     }
 
     if (ttsBtn) {
