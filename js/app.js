@@ -210,10 +210,10 @@ class EdukasiApp {
             </div>
             <!-- Tombol Aksi TTS dan Share (Ikon) -->
             <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
-              <button id="tts-btn-${fact.id}" class="btn-secondary btn-tts-scan" title="Dengarkan Narasi" style="width: 36px; height: 36px; padding: 0; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; background: rgba(0, 242, 254, 0.05); border-radius: 8px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;">
+              <button id="tts-btn-${fact.id}" class="btn-secondary btn-tts-scan" style="width: 36px; height: 36px; padding: 0; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; background: rgba(0, 242, 254, 0.05); border-radius: 8px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
               </button>
-              <button class="btn-secondary btn-share-portal" title="Bagikan Portal" style="width: 36px; height: 36px; padding: 0; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; background: rgba(255, 255, 255, 0.05); border-radius: 8px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;">
+              <button class="btn-secondary btn-share-portal" style="width: 36px; height: 36px; padding: 0; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; background: rgba(255, 255, 255, 0.05); border-radius: 8px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
               </button>
             </div>
@@ -332,10 +332,13 @@ class EdukasiApp {
     const synth = window.speechSynthesis;
     const btnEl = document.getElementById(`tts-btn-${fact.id}`);
 
+    const playIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
+    const stopIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+
     if (synth.speaking) {
       synth.cancel();
       this.showToast('🛑 Suara Dihentikan');
-      if (btnEl) btnEl.innerHTML = '<span>🔊</span> Dengarkan Suara (Bahasa Indonesia)';
+      if (btnEl) btnEl.innerHTML = playIcon;
       return;
     }
 
@@ -346,14 +349,14 @@ class EdukasiApp {
     utterance.rate = 0.95;
     
     utterance.onstart = () => {
-      if (btnEl) btnEl.innerHTML = '<span>🛑</span> Hentikan Suara';
+      if (btnEl) btnEl.innerHTML = stopIcon;
       this.showToast('🔊 Membacakan fakta dalam Bahasa Indonesia...');
     };
     utterance.onend = () => {
-      if (btnEl) btnEl.innerHTML = '<span>🔊</span> Dengarkan Suara (Bahasa Indonesia)';
+      if (btnEl) btnEl.innerHTML = playIcon;
     };
     utterance.onerror = () => {
-      if (btnEl) btnEl.innerHTML = '<span>🔊</span> Dengarkan Suara (Bahasa Indonesia)';
+      if (btnEl) btnEl.innerHTML = playIcon;
     };
     synth.speak(utterance);
   }
