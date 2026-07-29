@@ -142,15 +142,9 @@ class EdukasiApp {
   setupHeaderActions() {
     const themeBtn = document.getElementById('themeToggleBtn');
     const soundBtn = document.getElementById('soundToggleBtn');
-    const randomBtn = document.getElementById('scanRandomBtn');
 
     if (themeBtn) themeBtn.addEventListener('click', () => this.toggleTheme());
     if (soundBtn) soundBtn.addEventListener('click', () => this.toggleSound());
-    if (randomBtn) {
-      randomBtn.addEventListener('click', () => {
-        this.showScanFact('random');
-      });
-    }
   }
 
   /* ==========================================
@@ -257,6 +251,14 @@ class EdukasiApp {
             <span>Bagikan Wawasan</span>
           </button>
         </div>
+        
+        <!-- Tombol Eksplorasi Utama -->
+        <div style="margin-top: 24px; text-align: center;">
+          <button id="scanRandomBtnInside" class="btn-primary" style="width: 100%; background: var(--accent-gradient); color: #fff; border: none; font-size: 1.05rem; font-weight: 700; padding: 16px 32px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,242,254,0.25); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: inline-flex; justify-content: center; align-items: center; gap: 10px; letter-spacing: 0.5px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+            <span>Eksplorasi Wawasan Berikutnya</span>
+          </button>
+        </div>
 
       </article>
     `;
@@ -265,6 +267,7 @@ class EdukasiApp {
   bindScanCardButtons(parentEl, fact) {
     const ttsBtn = parentEl.querySelector('.btn-tts-scan');
     const shareBtn = parentEl.querySelector('.btn-share');
+    const randomBtnInside = parentEl.querySelector('#scanRandomBtnInside');
 
     if (ttsBtn) {
       ttsBtn.addEventListener('click', () => {
@@ -276,6 +279,12 @@ class EdukasiApp {
       shareBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         this.shareFact(fact.id);
+      });
+    }
+    
+    if (randomBtnInside) {
+      randomBtnInside.addEventListener('click', () => {
+        this.showScanFact('random');
       });
     }
   }
