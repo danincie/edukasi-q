@@ -1,4 +1,3 @@
-
 class EdukasiApp {
   constructor() {
     this.facts = (typeof FACTS_DATABASE !== 'undefined' ? FACTS_DATABASE : window.FACTS_DATABASE) || [];
@@ -217,8 +216,7 @@ class EdukasiApp {
           </div>
           <div class="reference-badge" onclick="this.classList.toggle('expanded')" title="Ketuk untuk melihat full referensi">
             <div class="reference-content">
-              <span style="display:inline-block; width:6px; height:6px; background:#10b981; border-radius:50%; box-shadow: 0 0 8px #10b981; flex-shrink: 0; margin-top: 4px;"></span>
-              <span class="reference-text">Referensi Valid: <strong style="color: #fff; font-weight: 700;">${fact.source}</strong></span>
+              <span class="reference-text">Referensi Valid: <a href="https://www.google.com/search?q=${encodeURIComponent(fact.source + ' ' + fact.title)}" target="_blank" onclick="event.stopPropagation()" title="Buka sumber referensi di tab baru" style="color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: 3px;">${fact.source}</a></span>
             </div>
             <svg class="reference-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
