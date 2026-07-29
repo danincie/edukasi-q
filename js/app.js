@@ -10,6 +10,10 @@ class EdukasiApp {
     this.recentHistory = [];   // Hafal ID fakta yang baru saja ditampilkan
     this.lastCategory = null;  // Hafal kategori terakhir (cegah monoton)
 
+    // Wikipedia Live Fetch
+    this.prefetchedWikiFact = null;  // Cache artikel Wikipedia berikutnya
+    this.isFetchingWiki = false;     // Flag agar tidak double-fetch
+
     this.init();
   }
 
@@ -22,6 +26,9 @@ class EdukasiApp {
       
       // Tampilkan fakta edukasi acak secara langsung!
       this.showScanFact('random', true);
+      
+      // Mulai pre-fetch artikel Wikipedia di background
+      this.prefetchWikiFact();
       
       console.log('💡 EdukasiQ Proker KKN Siap Digunakan! Total Fakta Valid:', this.facts.length);
     };
@@ -146,6 +153,68 @@ class EdukasiApp {
 
     if (themeBtn) themeBtn.addEventListener('click', () => this.toggleTheme());
     if (soundBtn) soundBtn.addEventListener('click', () => this.toggleSound());
+  }
+
+  /* ==========================================
+     WIKIPEDIA LIVE FETCH SYSTEM
+     ========================================== */
+
+  /**
+   * Fetch 1 artikel acak dari Wikipedia Bahasa Indonesia.
+   * Validasi: harus ada extract >120 karakter & bukan halaman disambiguasi.
+   * Retry otomatis hingga 4x jika dapat artikel tidak layak.
+   */
+  async fetchWikiFact(retries = 4) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const res = await fetch('https://id.wikipedia.org/api/rest_v1/page/random/summary', {
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!res.ok) continue;
+        const data = await res.json();
+
+        // Filter: skip halaman tidak berguna
+        const extract = (data.extract || '').trim();
+        if (
+          extract.length < 120 ||
+          (data.type && data.type === 'disambiguation') ||
+          !data.title
+        ) continue;
+
+        // Potong ringkasan (kalimat pertama)
+        const firstSentence = extract.split(/\.\s+/)[0] + '.';
+
+        // Konversi ke format fakta app
+        return {
+          id: `wiki-${data.pageid}`,
+          categoryName: data.description || 'Wikipedia',
+          title: data.title,
+          shortSummary: firstSentence.length > 200 ? firstSentence.substring(0, 197) + '...' : firstSentence,
+          fullExplanation: extract,
+          funFact: `Artikel ini berasal dari Wikipedia Bahasa Indonesia dan dapat diverifikasi secara bebas oleh siapa saja.`,
+          source: `Wikipedia Indonesia — ${data.title}`,
+          wikiUrl: data.content_urls?.desktop?.page || `https://id.wikipedia.org/wiki/${encodeURIComponent(data.title)}`,
+          isLive: true  // Penanda artikel dari internet
+        };
+      } catch (e) {
+        // Jaringan error — lanjut retry
+      }
+    }
+    return null; // Semua retry gagal
+  }
+
+  /**
+   * Pre-fetch artikel berikutnya di background agar terasa instan saat diklik.
+   */
+  async prefetchWikiFact() {
+    if (this.isFetchingWiki) return;
+    this.isFetchingWiki = true;
+    try {
+      const fact = await this.fetchWikiFact();
+      this.prefetchedWikiFact = fact; // null jika gagal → akan fallback ke lokal
+    } finally {
+      this.isFetchingWiki = false;
+    }
   }
 
   /* ==========================================
@@ -308,6 +377,62 @@ class EdukasiApp {
     `;
   }
 
+  async showNextFact() {
+    const container = document.getElementById('scanDisplayContainer');
+    if (!container) return;
+
+    this.playSound('pop');
+    if (typeof confetti === 'function') {
+      try { confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } }); } catch(e){}
+    }
+    if ('speechSynthesis' in window) {
+      try { window.speechSynthesis.cancel(); } catch(e){}
+    }
+
+    // Jika ada artikel Wikipedia yang sudah di-prefetch, gunakan itu
+    if (this.prefetchedWikiFact) {
+      const fact = this.prefetchedWikiFact;
+      this.prefetchedWikiFact = null;
+      // Langsung tampilkan artikel live
+      container.innerHTML = this.createExpandedScanCardHTML(fact);
+      this.bindScanCardButtons(container, fact);
+      // Pre-fetch berikutnya di background
+      this.prefetchWikiFact();
+      return;
+    }
+
+    // Jika sedang fetch (belum selesai), tampilkan loading sebentar lalu tunggu
+    if (this.isFetchingWiki) {
+      container.innerHTML = this.createLoadingHTML();
+      const fact = await this.fetchWikiFact();
+      if (fact) {
+        container.innerHTML = this.createExpandedScanCardHTML(fact);
+        this.bindScanCardButtons(container, fact);
+        this.prefetchWikiFact();
+        return;
+      }
+    }
+
+    // Fallback: gunakan data lokal
+    this.showScanFact('random');
+    // Coba prefetch Wikipedia lagi di background
+    this.prefetchWikiFact();
+  }
+
+  createLoadingHTML() {
+    return `
+      <article class="featured-fact-card" style="width:100%;max-width:100%;margin:0 auto;padding:clamp(20px,4vw,40px);border:1px solid var(--glass-border);border-radius:24px;background:var(--glass-bg);backdrop-filter:blur(24px);box-shadow:0 20px 50px rgba(0,0,0,0.4);min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
+        <div style="display:flex;gap:8px;">
+          <span style="width:10px;height:10px;border-radius:50%;background:#00F2FE;animation:bounce 0.8s ease-in-out infinite;"></span>
+          <span style="width:10px;height:10px;border-radius:50%;background:#00F2FE;animation:bounce 0.8s ease-in-out 0.15s infinite;"></span>
+          <span style="width:10px;height:10px;border-radius:50%;background:#00F2FE;animation:bounce 0.8s ease-in-out 0.3s infinite;"></span>
+        </div>
+        <p style="color:var(--text-secondary);font-size:0.95rem;margin:0;">Mengambil wawasan baru dari Wikipedia...</p>
+        <style>@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}</style>
+      </article>
+    `;
+  }
+
   bindScanCardButtons(parentEl, fact) {
     const ttsBtn = parentEl.querySelector('.btn-tts-scan');
     const sharePortalBtn = parentEl.querySelector('.btn-share-portal');
@@ -351,7 +476,7 @@ class EdukasiApp {
     
     if (randomBtnInside) {
       randomBtnInside.addEventListener('click', () => {
-        this.showScanFact('random');
+        this.showNextFact();
       });
     }
   }
