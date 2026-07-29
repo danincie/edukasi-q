@@ -1146,3 +1146,56 @@ body {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
+
+/* ==========================================
+   REFERENCE BADGE EXPANDABLE
+   ========================================== */
+.reference-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.reference-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.reference-badge.expanded .reference-content {
+  align-items: flex-start;
+}
+
+.reference-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.reference-badge.expanded .reference-text {
+  white-space: normal;
+}
+
+.reference-chevron {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+.reference-badge.expanded .reference-chevron {
+  transform: rotate(180deg);
+}

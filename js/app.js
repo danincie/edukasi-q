@@ -215,10 +215,15 @@ class EdukasiApp {
               </button>
             </div>
           </div>
-          <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); background: rgba(255, 255, 255, 0.04); padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1); display: inline-flex; align-items: center; gap: 8px; width: fit-content;">
-            <span style="display:inline-block; width:6px; height:6px; background:#10b981; border-radius:50%; box-shadow: 0 0 8px #10b981;"></span>
-            Referensi Valid: <strong style="color: #fff; font-weight: 700;">${fact.source}</strong>
-          </span>
+          <div class="reference-badge" onclick="this.classList.toggle('expanded')" title="Ketuk untuk melihat full referensi">
+            <div class="reference-content">
+              <span style="display:inline-block; width:6px; height:6px; background:#10b981; border-radius:50%; box-shadow: 0 0 8px #10b981; flex-shrink: 0; margin-top: 4px;"></span>
+              <span class="reference-text">Referensi Valid: <strong style="color: #fff; font-weight: 700;">${fact.source}</strong></span>
+            </div>
+            <svg class="reference-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
         </div>
 
         <!-- Judul Fakta yang Kuat & Jelas -->
