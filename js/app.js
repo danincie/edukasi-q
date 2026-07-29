@@ -282,9 +282,17 @@ class EdukasiApp {
     const marqueeContainer = parentEl.querySelector('.marquee-container');
     const marqueeText = parentEl.querySelector('.marquee-text');
     if (marqueeContainer && marqueeText) {
-      if (marqueeText.scrollWidth > marqueeContainer.clientWidth) {
-        marqueeContainer.classList.add('is-running');
-      }
+      // Gunakan setTimeout agar browser selesai me-render dan menghitung layout
+      setTimeout(() => {
+        // Lepas batasan width sementara untuk mendapatkan lebar teks asli (tanpa elipsis)
+        marqueeText.style.width = 'auto';
+        
+        if (marqueeText.scrollWidth > marqueeContainer.clientWidth) {
+          marqueeContainer.classList.add('is-running');
+        } else {
+          marqueeText.style.width = '100%'; // Kembalikan jika tidak berjalan
+        }
+      }, 50);
     }
 
     if (ttsBtn) {
