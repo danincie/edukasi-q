@@ -246,9 +246,9 @@ class EdukasiApp {
             <span>Dengarkan Narasi</span>
           </button>
           
-          <button class="btn-secondary btn-share" data-id="${fact.id}" style="padding: 10px 20px; font-size: 0.9rem; font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; background: rgba(255, 255, 255, 0.05); border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            <span>Bagikan Wawasan</span>
+          <button class="btn-secondary btn-share-portal" style="padding: 10px 20px; font-size: 0.9rem; font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; background: rgba(255, 255, 255, 0.05); border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+            <span>Bagikan Portal</span>
           </button>
         </div>
         
@@ -266,7 +266,7 @@ class EdukasiApp {
 
   bindScanCardButtons(parentEl, fact) {
     const ttsBtn = parentEl.querySelector('.btn-tts-scan');
-    const shareBtn = parentEl.querySelector('.btn-share');
+    const sharePortalBtn = parentEl.querySelector('.btn-share-portal');
     const randomBtnInside = parentEl.querySelector('#scanRandomBtnInside');
 
     if (ttsBtn) {
@@ -275,10 +275,10 @@ class EdukasiApp {
       });
     }
 
-    if (shareBtn) {
-      shareBtn.addEventListener('click', (e) => {
+    if (sharePortalBtn) {
+      sharePortalBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        this.shareFact(fact.id);
+        this.openQrModal();
       });
     }
     
@@ -323,25 +323,14 @@ class EdukasiApp {
     synth.speak(utterance);
   }
 
-  shareFact(factId) {
-    this.playSound('pop');
-    const fact = this.facts.find(f => f.id === factId);
-    if (!fact) return;
-
-    const shareText = `💡 TAHUKAH KAMU?\n\n*${fact.title}*\n\n"${fact.shortSummary}"\n\n⚡ ${fact.funFact}\n\n📚 Sumber: ${fact.source}\n\n👉 Scan Barcode / Kunjungi Web EdukasiQ KKN untuk pengetahuan unik terverifikasi lainnya setiap hari!`;
-
-    if (navigator.share) {
-      navigator.share({
-        title: `EdukasiQ: ${fact.title}`,
-        text: shareText,
-        url: window.location.href
-      }).catch(err => console.log('Share canceled', err));
-    } else {
-      navigator.clipboard.writeText(shareText).then(() => {
-        this.showToast('📋 Teks Fakta Berhasil Disalin! Siap dibagikan ke WhatsApp / IG Story!');
-      }).catch(() => {
-        alert(shareText);
-      });
+  openQrModal() {
+    this.playSound('click');
+    const modal = document.getElementById('qrModal');
+    if (modal) {
+      modal.classList.add('active');
+      if (window.qrStudio && typeof window.qrStudio.renderQrCode === 'function') {
+        window.qrStudio.renderQrCode();
+      }
     }
   }
 
@@ -349,20 +338,8 @@ class EdukasiApp {
      STUDIO QR STIKER (MODAL FOOTER)
      ========================================== */
   setupQrModalActions() {
-    const openBtn = document.getElementById('openQrModalBtn');
     const closeBtn = document.getElementById('closeQrModalBtn');
     const modal = document.getElementById('qrModal');
-
-    if (openBtn && modal) {
-      openBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.playSound('click');
-        modal.classList.add('active');
-        if (window.qrStudio && typeof window.qrStudio.renderQrCode === 'function') {
-          window.qrStudio.renderQrCode();
-        }
-      });
-    }
 
     const closeModalFunc = () => {
       this.playSound('click');
