@@ -1133,3 +1133,19 @@ body {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
+
+/* Disable Marquee on Desktop (min-width: 768px) */
+@media (min-width: 768px) {
+  .marquee-container {
+    padding: 6px 14px;
+    flex: 0 1 auto;
+    max-width: 100%;
+  }
+  
+  .marquee-text {
+    animation: none;
+    padding-left: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
