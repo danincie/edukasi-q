@@ -7,6 +7,8 @@ class EdukasiApp {
     this.lastRandomId = null;
     this.audioCtx = null;
     this.shuffleDeck = [];
+    this.recentHistory = [];   // Hafal ID fakta yang baru saja ditampilkan
+    this.lastCategory = null;  // Hafal kategori terakhir (cegah monoton)
 
     this.init();
   }
@@ -160,25 +162,55 @@ class EdukasiApp {
       }
     }
 
-    // Algoritma Smart Shuffle Deck (Anti-Pengulangan 0% Duplikasi):
-    // Jika tumpukan kartu habis atau belum dibuat, isi ulang dengan seluruh fakta dan kocok secara acak (Fisher-Yates Shuffle)
+    // ================================================
+    // ALGORITMA SMART SHUFFLE UNLIMITED:
+    // Fisher-Yates + History-Aware + Category-Aware
+    // ================================================
+
+    // Ukuran history: simpan 1/3 dari total fakta (min 3, max 8)
+    const HISTORY_SIZE = Math.min(8, Math.max(3, Math.floor(this.facts.length / 3)));
+
+    // Isi ulang deck jika habis
     if (!this.shuffleDeck || this.shuffleDeck.length === 0) {
+      // Fisher-Yates Shuffle
       this.shuffleDeck = [...this.facts];
       for (let i = this.shuffleDeck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [this.shuffleDeck[i], this.shuffleDeck[j]] = [this.shuffleDeck[j], this.shuffleDeck[i]];
       }
-      // Pastikan fakta pertama di putaran baru tidak sama dengan fakta terakhir yang baru saja dibaca
-      if (this.shuffleDeck.length > 1 && this.shuffleDeck[this.shuffleDeck.length - 1].id === this.lastRandomId) {
-        // Tukar kartu teratas dengan kartu di bawahnya
-        const topIdx = this.shuffleDeck.length - 1;
-        [this.shuffleDeck[topIdx], this.shuffleDeck[0]] = [this.shuffleDeck[0], this.shuffleDeck[topIdx]];
+      // Buang fakta yang baru saja ditampilkan dari awal deck (hindari pengulangan di batas siklus)
+      if (this.recentHistory.length > 0) {
+        const recentSet = new Set(this.recentHistory);
+        // Pindahkan fakta dari history ke belakang deck
+        const safe = this.shuffleDeck.filter(f => !recentSet.has(f.id));
+        const recent = this.shuffleDeck.filter(f => recentSet.has(f.id));
+        this.shuffleDeck = [...recent, ...safe]; // recent di belakang (diambil terakhir)
       }
     }
 
-    // Ambil fakta teratas dari dek kartu yang sudah dikocok
-    const fact = this.shuffleDeck.pop();
+    // Pilih fakta berikutnya — cegah kategori yang sama muncul 2x berturut-turut
+    let fact = null;
+    for (let attempt = this.shuffleDeck.length - 1; attempt >= 0; attempt--) {
+      const candidate = this.shuffleDeck[attempt];
+      if (candidate.categoryName !== this.lastCategory) {
+        // Ambil kandidat ini dari deck
+        this.shuffleDeck.splice(attempt, 1);
+        fact = candidate;
+        break;
+      }
+    }
+    // Fallback: jika semua sisa deck kategorinya sama (deck hampir habis), ambil yang teratas
+    if (!fact) {
+      fact = this.shuffleDeck.pop();
+    }
+
+    // Update history
     this.lastRandomId = fact.id;
+    this.lastCategory = fact.categoryName;
+    this.recentHistory.push(fact.id);
+    if (this.recentHistory.length > HISTORY_SIZE) {
+      this.recentHistory.shift(); // Hapus entri paling lama
+    }
 
     // Hentikan suara jika sedang berbicara
     if ('speechSynthesis' in window) {
