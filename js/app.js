@@ -190,8 +190,12 @@ class EdukasiApp {
   }
 
   createExpandedScanCardHTML(fact) {
+    // Parser markdown sederhana untuk format teks tebal (**teks**)
+    const formatText = (text) => (text || '').replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--text-primary); font-weight: 700;">$1</strong>');
+
     // Ambil hanya paragraf pertama dari penjelasan agar singkat dan mudah dicerna
-    const briefText = (fact.fullExplanation || '').split('\n\n')[0].split('\n')[0];
+    const briefText = formatText((fact.fullExplanation || '').split('\n\n')[0].split('\n')[0]);
+    const fullExpHTML = formatText(fact.fullExplanation);
 
     return `
       <article class="featured-fact-card" style="width: 100%; max-width: 100%; margin: 0 auto; padding: clamp(20px, 4vw, 40px); border: 1px solid var(--glass-border); border-radius: 24px; background: var(--glass-bg); backdrop-filter: blur(24px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); transition: all 0.3s ease;">
@@ -246,7 +250,7 @@ class EdukasiApp {
             <span style="font-size: 1.2rem; transition: transform 0.2s;">▾</span>
           </summary>
           <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: clamp(0.95rem, 3vw, 1rem); color: var(--text-secondary); line-height: 1.8; text-align: justify; white-space: pre-line; word-spacing: 0.05em; letter-spacing: 0.2px;">
-            ${fact.fullExplanation}
+            ${fullExpHTML}
             
             <div style="margin-top: 20px; background: rgba(255, 255, 255, 0.03); border-left: 3px solid #60a5fa; padding: 14px 18px; border-radius: 0 8px 8px 0; text-align: left;">
               <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #60a5fa; font-weight: 700; margin-bottom: 4px;">Catatan Kritis & Analisis Tambahan</div>
