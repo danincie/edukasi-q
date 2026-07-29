@@ -271,6 +271,15 @@ class EdukasiApp {
     const sharePortalBtn = parentEl.querySelector('.btn-share-portal');
     const randomBtnInside = parentEl.querySelector('#scanRandomBtnInside');
 
+    // Cek apakah teks marquee terlalu panjang dan butuh berjalan
+    const marqueeContainer = parentEl.querySelector('.marquee-container');
+    const marqueeText = parentEl.querySelector('.marquee-text');
+    if (marqueeContainer && marqueeText) {
+      if (marqueeText.scrollWidth > marqueeContainer.clientWidth) {
+        marqueeContainer.classList.add('is-running');
+      }
+    }
+
     if (ttsBtn) {
       ttsBtn.addEventListener('click', () => {
         this.speakScanFact(fact);

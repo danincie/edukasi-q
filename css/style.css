@@ -1112,9 +1112,13 @@ body {
   border-radius: 6px;
   border: 1px solid rgba(0, 242, 254, 0.25);
   background: rgba(0, 242, 254, 0.08);
-  padding: 6px 0; /* Padding L/R handled by marquee to allow full scroll */
+  padding: 6px 14px;
   display: flex;
   align-items: center;
+}
+
+.marquee-container.is-running {
+  padding: 6px 0; /* Padding L/R handled by marquee to allow full scroll */
 }
 
 .marquee-text {
@@ -1125,27 +1129,20 @@ body {
   color: #00F2FE;
   white-space: nowrap;
   display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.marquee-container.is-running .marquee-text {
   padding-left: 100%;
   animation: scroll-left 10s linear infinite;
+  overflow: visible;
+  text-overflow: clip;
+  width: auto;
 }
 
 @keyframes scroll-left {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
-}
-
-/* Disable Marquee on Desktop (min-width: 768px) */
-@media (min-width: 768px) {
-  .marquee-container {
-    padding: 6px 14px;
-    flex: 0 1 auto;
-    max-width: 100%;
-  }
-  
-  .marquee-text {
-    animation: none;
-    padding-left: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
 }
