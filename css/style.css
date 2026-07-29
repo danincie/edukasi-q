@@ -1107,6 +1107,7 @@ body {
    ========================================== */
 .marquee-container {
   flex: 1;
+  min-width: 0;
   overflow: hidden;
   position: relative;
   border-radius: 6px;
