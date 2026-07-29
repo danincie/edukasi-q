@@ -218,14 +218,6 @@ class EdukasiApp {
               </button>
             </div>
           </div>
-          <div class="reference-badge" onclick="this.classList.toggle('expanded')" title="Ketuk untuk melihat full referensi">
-            <div class="reference-content">
-              <span class="reference-text">Referensi Valid: <a href="https://www.google.com/search?q=${encodeURIComponent(fact.source + ' ' + fact.title)}" target="_blank" onclick="event.stopPropagation()" title="Buka sumber referensi di tab baru" style="color: #fff; font-weight: 700; text-decoration: none;">${fact.source}</a></span>
-            </div>
-            <svg class="reference-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </div>
         </div>
 
         <!-- Judul Fakta yang Kuat & Jelas -->
@@ -256,6 +248,17 @@ class EdukasiApp {
               <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #60a5fa; font-weight: 700; margin-bottom: 4px;">Catatan Kritis & Analisis Tambahan</div>
               <div style="color: var(--text-primary); font-weight: 500; font-size: clamp(0.9rem, 2.8vw, 0.95rem); line-height: 1.6;">${fact.funFact}</div>
             </div>
+            
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <div class="reference-badge" onclick="this.classList.toggle('expanded')" title="Ketuk untuk melihat full referensi">
+                <div class="reference-content">
+                  <span class="reference-text">Referensi Valid: <a href="https://www.google.com/search?q=${encodeURIComponent(fact.source + ' ' + fact.title)}" target="_blank" onclick="event.stopPropagation()" title="Buka sumber referensi di tab baru" style="color: #fff; font-weight: 700; text-decoration: none;">${fact.source}</a></span>
+                </div>
+                <svg class="reference-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </div>
           </div>
         </details>
 
@@ -284,15 +287,22 @@ class EdukasiApp {
     if (marqueeContainer && marqueeText) {
       // Gunakan setTimeout agar browser selesai me-render dan menghitung layout
       setTimeout(() => {
-        // Lepas batasan width sementara untuk mendapatkan lebar teks asli (tanpa elipsis)
+        // Lepas batasan flexbox sementara dengan absolute & auto untuk mendapatkan lebar teks asli
+        const originalWidth = marqueeText.style.width;
+        const originalPos = marqueeText.style.position;
         marqueeText.style.width = 'auto';
+        marqueeText.style.position = 'absolute';
         
-        if (marqueeText.scrollWidth > marqueeContainer.clientWidth) {
+        const realWidth = marqueeText.scrollWidth;
+        
+        // Kembalikan style
+        marqueeText.style.width = originalWidth;
+        marqueeText.style.position = originalPos;
+
+        if (realWidth > marqueeContainer.clientWidth) {
           marqueeContainer.classList.add('is-running');
-        } else {
-          marqueeText.style.width = '100%'; // Kembalikan jika tidak berjalan
         }
-      }, 50);
+      }, 100);
     }
 
     if (ttsBtn) {
