@@ -198,11 +198,22 @@ class EdukasiApp {
       <article class="featured-fact-card" style="width: 100%; max-width: 100%; margin: 0 auto; padding: clamp(20px, 4vw, 40px); border: 1px solid var(--glass-border); border-radius: 24px; background: var(--glass-bg); backdrop-filter: blur(24px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); transition: all 0.3s ease;">
         
         <!-- Header Bar: Akreditasi & Referensi Ilmiah -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 12px;">
-          <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #00F2FE; background: rgba(0, 242, 254, 0.08); padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(0, 242, 254, 0.25);">
-            BIDANG: ${fact.categoryName.toUpperCase()}
-          </span>
-          <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); background: rgba(255, 255, 255, 0.04); padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1); display: inline-flex; align-items: center; gap: 8px;">
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #00F2FE; background: rgba(0, 242, 254, 0.08); padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(0, 242, 254, 0.25);">
+              BIDANG: ${fact.categoryName.toUpperCase()}
+            </span>
+            <!-- Tombol Aksi TTS dan Share (Ikon) -->
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button id="tts-btn-${fact.id}" class="btn-secondary btn-tts-scan" title="Dengarkan Narasi" style="width: 36px; height: 36px; padding: 0; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; background: rgba(0, 242, 254, 0.05); border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+              </button>
+              <button class="btn-secondary btn-share-portal" title="Bagikan Portal" style="width: 36px; height: 36px; padding: 0; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; background: rgba(255, 255, 255, 0.05); border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+              </button>
+            </div>
+          </div>
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); background: rgba(255, 255, 255, 0.04); padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1); display: inline-flex; align-items: center; gap: 8px; width: fit-content;">
             <span style="display:inline-block; width:6px; height:6px; background:#10b981; border-radius:50%; box-shadow: 0 0 8px #10b981;"></span>
             Referensi Valid: <strong style="color: #fff; font-weight: 700;">${fact.source}</strong>
           </span>
@@ -239,18 +250,7 @@ class EdukasiApp {
           </div>
         </details>
 
-        <!-- Action Bar: Simpel, Bersih, Profesional dengan SVG Icon -->
-        <div style="display: flex; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--glass-border); padding-top: 20px; align-items: stretch;">
-          <button id="tts-btn-${fact.id}" class="btn-secondary btn-tts-scan" style="flex: 1; min-width: 140px; justify-content: center; padding: 12px 20px; font-size: clamp(0.85rem, 2.5vw, 0.9rem); border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; background: rgba(0, 242, 254, 0.05); font-weight: 600; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-            <span>Dengarkan Narasi</span>
-          </button>
-          
-          <button class="btn-secondary btn-share-portal" style="flex: 1; min-width: 140px; justify-content: center; padding: 12px 20px; font-size: clamp(0.85rem, 2.5vw, 0.9rem); font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; background: rgba(255, 255, 255, 0.05); border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
-            <span>Bagikan Portal</span>
-          </button>
-        </div>
+        <!-- Separator dihapus karena tombol aksi sudah di atas -->
         
         <!-- Tombol Eksplorasi Utama -->
         <div style="margin-top: 24px; text-align: center;">
