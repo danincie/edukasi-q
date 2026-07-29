@@ -216,7 +216,7 @@ class EdukasiApp {
           </div>
           <div class="reference-badge" onclick="this.classList.toggle('expanded')" title="Ketuk untuk melihat full referensi">
             <div class="reference-content">
-              <span class="reference-text">Referensi Valid: <a href="https://www.google.com/search?q=${encodeURIComponent(fact.source + ' ' + fact.title)}" target="_blank" onclick="event.stopPropagation()" title="Buka sumber referensi di tab baru" style="color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: 3px;">${fact.source}</a></span>
+              <span class="reference-text">Referensi Valid: <a href="https://www.google.com/search?q=${encodeURIComponent(fact.source + ' ' + fact.title)}" target="_blank" onclick="event.stopPropagation()" title="Buka sumber referensi di tab baru" style="color: #fff; font-weight: 700; text-decoration: none;">${fact.source}</a></span>
             </div>
             <svg class="reference-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
