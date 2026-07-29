@@ -31,21 +31,21 @@
   <div class="app-container" style="width: 100%; max-width: 100%; margin: 0 auto; padding: 24px 4vw 80px;">
     
     <!-- HEADER BERSIH TANPA KOTAK CONTAINER (LOGO KIRI, TOMBOL KANAN) -->
-    <header style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0 24px 0; margin-bottom: 32px;">
+    <header style="display: flex; align-items: center; justify-content: space-between; padding: clamp(8px, 2vw, 12px) 0 clamp(16px, 4vw, 24px) 0; margin-bottom: clamp(16px, 5vw, 32px);">
       
       <!-- Logo Web di Pojok Kiri Atas -->
       <div style="cursor: pointer; display: flex; align-items: center;" onclick="window.location.reload();">
-        <h1 style="font-size: 1.8rem; font-weight: 800; margin: 0; background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">
+        <h1 style="font-size: clamp(1.4rem, 6vw, 1.8rem); font-weight: 800; margin: 0; background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">
           EdukasiQ
         </h1>
       </div>
 
       <!-- Tombol Audio & Mode Gelap/Terang di Pojok Kanan Atas Layar -->
-      <div style="display: flex; align-items: center; gap: 14px;">
-        <button id="soundToggleBtn" class="icon-btn" title="Aktifkan/Matikan Suara" style="width: 44px; height: 44px; border-radius: 14px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-primary); font-size: 1.15rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;">
+      <div style="display: flex; align-items: center; gap: clamp(8px, 2.5vw, 14px);">
+        <button id="soundToggleBtn" class="icon-btn" title="Aktifkan/Matikan Suara" style="width: clamp(38px, 10vw, 44px); height: clamp(38px, 10vw, 44px); border-radius: clamp(10px, 3vw, 14px); border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-primary); font-size: clamp(1rem, 3vw, 1.15rem); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;">
           🔊
         </button>
-        <button id="themeToggleBtn" class="icon-btn" title="Ganti Tema Gelap/Terang" style="width: 44px; height: 44px; border-radius: 14px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-primary); font-size: 1.15rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;">
+        <button id="themeToggleBtn" class="icon-btn" title="Ganti Tema Gelap/Terang" style="width: clamp(38px, 10vw, 44px); height: clamp(38px, 10vw, 44px); border-radius: clamp(10px, 3vw, 14px); border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-primary); font-size: clamp(1rem, 3vw, 1.15rem); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;">
           🌙
         </button>
       </div>
