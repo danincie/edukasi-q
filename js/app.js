@@ -201,7 +201,7 @@ class EdukasiApp {
     const briefText = (fact.fullExplanation || '').split('\n\n')[0].split('\n')[0];
 
     return `
-      <article class="featured-fact-card" style="width: 100%; max-width: 1000px; margin: 0 auto; padding: clamp(24px, 5vw, 48px); border: 1px solid var(--glass-border); border-radius: 24px; background: var(--glass-bg); backdrop-filter: blur(24px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); transition: all 0.3s ease;">
+      <article class="featured-fact-card" style="width: 100%; max-width: 1200px; margin: 0 auto; padding: clamp(24px, 5vw, 48px); border: 1px solid var(--glass-border); border-radius: 24px; background: var(--glass-bg); backdrop-filter: blur(24px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); transition: all 0.3s ease;">
         
         <!-- Header Bar: Akreditasi & Referensi Ilmiah -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 12px;">
