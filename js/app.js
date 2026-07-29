@@ -200,9 +200,11 @@ class EdukasiApp {
         <!-- Header Bar: Akreditasi & Referensi Ilmiah -->
         <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08);">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; gap: 12px;">
-            <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #00F2FE; background: rgba(0, 242, 254, 0.08); padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(0, 242, 254, 0.25); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1;">
-              BIDANG: ${fact.categoryName.toUpperCase()}
-            </span>
+            <div class="marquee-container">
+              <div class="marquee-text">
+                ${fact.categoryName.toUpperCase()}
+              </div>
+            </div>
             <!-- Tombol Aksi TTS dan Share (Ikon) -->
             <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
               <button id="tts-btn-${fact.id}" class="btn-secondary btn-tts-scan" title="Dengarkan Narasi" style="width: 36px; height: 36px; padding: 0; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; background: rgba(0, 242, 254, 0.05); border-radius: 8px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;">
