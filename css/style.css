@@ -1296,15 +1296,18 @@ body {
 
 
 /* ==========================================
-   SITE FOOTER — CLEAN MINIMALIST (GOOGLE/MICROSOFT STYLE)
+   SITE FOOTER — PREMIUM DARK MINIMALIST
    ========================================== */
 
 .site-footer {
   margin-top: 80px;
   width: 100%;
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--glass-border);
-  color: var(--text-secondary);
+  /* Memastikan footer selalu berwarna gelap premium (walaupun di light mode) agar elegan */
+  background: rgba(15, 17, 23, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
   display: flex;
   flex-direction: column;
 }
@@ -1314,14 +1317,14 @@ body {
   display: flex;
   align-items: center;
   padding: 24px 5vw;
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   gap: 24px;
 }
 
 .footer-social-title {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #ffffff;
   letter-spacing: 0.5px;
 }
 
@@ -1332,13 +1335,13 @@ body {
 }
 
 .footer-social-icons a {
-  color: var(--text-tertiary);
+  color: #94a3b8;
   transition: color 0.2s ease, transform 0.2s ease;
   display: flex;
 }
 
 .footer-social-icons a:hover {
-  color: var(--text-primary);
+  color: #ffffff;
   transform: translateY(-2px);
 }
 
@@ -1362,21 +1365,19 @@ body {
 .footer-logos-clean {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
 }
 
 .footer-logos-clean img {
-  height: 52px;
+  height: 64px; /* Ukuran yang ideal, tidak terlalu kecil */
   width: auto;
   object-fit: contain;
-  /* Pro touch: grayscale logos that colorize on hover untuk kesan elegan */
-  filter: grayscale(100%) opacity(70%); 
-  transition: filter 0.3s ease, transform 0.3s ease;
+  transition: transform 0.3s ease;
+  /* Dihapus: filter grayscale, agar warna asli logo (hijau, kuning) menonjol elegan di latar gelap */
 }
 
 .footer-logos-clean img:hover {
-  filter: grayscale(0%) opacity(100%);
-  transform: scale(1.02);
+  transform: scale(1.05);
 }
 
 .footer-links-clean {
@@ -1388,21 +1389,21 @@ body {
 .footer-links-clean a {
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--text-tertiary);
+  color: #94a3b8;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .footer-links-clean a:hover {
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 /* --- Bottom Section: Copyright --- */
 .footer-bottom-clean {
   padding: 20px 5vw;
-  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   font-size: 0.75rem;
-  color: var(--text-tertiary);
+  color: #64748b;
   display: flex;
   justify-content: space-between;
 }
@@ -1426,7 +1427,7 @@ body {
   }
   
   .footer-logos-clean img {
-    height: 44px;
+    height: 52px;
   }
 }
 
