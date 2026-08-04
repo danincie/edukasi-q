@@ -1199,3 +1199,98 @@ body {
 .reference-badge.expanded .reference-chevron {
   transform: rotate(180deg);
 }
+
+/* ==========================================
+   MULTI-SOURCE API ENGINE — LIVE BADGE & STYLES
+   ========================================== */
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+@keyframes liveGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(0, 242, 254, 0); }
+}
+
+/* Badge LIVE — ditampilkan di marquee kategori */
+.live-badge {
+  vertical-align: middle;
+  animation: liveGlow 2s ease-in-out infinite;
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+}
+
+/* Gambar NASA APOD di dalam kartu */
+.nasa-image-wrapper {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  position: relative;
+  max-height: 300px;
+  border: 1px solid var(--glass-border);
+}
+
+.nasa-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.nasa-image-wrapper:hover img {
+  transform: scale(1.03);
+}
+
+.nasa-image-credit {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+  color: rgba(255,255,255,0.7);
+  font-size: 0.72rem;
+  padding: 18px 12px 8px;
+  font-weight: 500;
+}
+
+/* Indikator sumber bawah kartu */
+.source-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  margin-top: 6px;
+  transition: all 0.2s;
+}
+
+.source-indicator:hover {
+  background: var(--glass-bg-hover);
+  color: var(--text-secondary);
+}
+
+/* Trivia answer list styling */
+.trivia-option {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--glass-border);
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  transition: background 0.2s;
+}
+
+.trivia-option:hover {
+  background: rgba(255,255,255,0.07);
+}
+

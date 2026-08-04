@@ -10,9 +10,8 @@ class EdukasiApp {
     this.recentHistory = [];   // Hafal ID fakta yang baru saja ditampilkan
     this.lastCategory = null;  // Hafal kategori terakhir (cegah monoton)
 
-    // Wikipedia Live Fetch
-    this.prefetchedWikiFact = null;  // Cache artikel Wikipedia berikutnya
-    this.isFetchingWiki = false;     // Flag agar tidak double-fetch
+    // Multi-Source API Engine (diinisialisasi di api-engine.js)
+    // Referensi ke window.apiEngine yang sudah siap
 
     this.init();
   }
@@ -27,10 +26,7 @@ class EdukasiApp {
       // Tampilkan fakta edukasi acak secara langsung!
       this.showScanFact('random', true);
       
-      // Mulai pre-fetch artikel Wikipedia di background
-      this.prefetchWikiFact();
-      
-      console.log('💡 EdukasiQ Proker KKN Siap Digunakan! Total Fakta Valid:', this.facts.length);
+      console.log('💡 EdukasiQ Siap! Total Fakta Lokal:', this.facts.length, '| API Engine:', window.apiEngine ? 'Aktif ✅' : 'Tidak tersedia ⚠️');
     };
 
     if (document.readyState === 'loading') {
@@ -156,66 +152,8 @@ class EdukasiApp {
   }
 
   /* ==========================================
-     WIKIPEDIA LIVE FETCH SYSTEM
+     (Wikipedia fetch lama digantikan oleh ApiEngine di api-engine.js)
      ========================================== */
-
-  /**
-   * Fetch 1 artikel acak dari Wikipedia Bahasa Indonesia.
-   * Validasi: harus ada extract >120 karakter & bukan halaman disambiguasi.
-   * Retry otomatis hingga 4x jika dapat artikel tidak layak.
-   */
-  async fetchWikiFact(retries = 4) {
-    for (let i = 0; i < retries; i++) {
-      try {
-        const res = await fetch('https://id.wikipedia.org/api/rest_v1/page/random/summary', {
-          headers: { 'Accept': 'application/json' }
-        });
-        if (!res.ok) continue;
-        const data = await res.json();
-
-        // Filter: skip halaman tidak berguna
-        const extract = (data.extract || '').trim();
-        if (
-          extract.length < 120 ||
-          (data.type && data.type === 'disambiguation') ||
-          !data.title
-        ) continue;
-
-        // Potong ringkasan (kalimat pertama)
-        const firstSentence = extract.split(/\.\s+/)[0] + '.';
-
-        // Konversi ke format fakta app
-        return {
-          id: `wiki-${data.pageid}`,
-          categoryName: data.description || 'Wikipedia',
-          title: data.title,
-          shortSummary: firstSentence.length > 200 ? firstSentence.substring(0, 197) + '...' : firstSentence,
-          fullExplanation: extract,
-          funFact: `Artikel ini berasal dari Wikipedia Bahasa Indonesia dan dapat diverifikasi secara bebas oleh siapa saja.`,
-          source: `Wikipedia Indonesia — ${data.title}`,
-          wikiUrl: data.content_urls?.desktop?.page || `https://id.wikipedia.org/wiki/${encodeURIComponent(data.title)}`,
-          isLive: true  // Penanda artikel dari internet
-        };
-      } catch (e) {
-        // Jaringan error — lanjut retry
-      }
-    }
-    return null; // Semua retry gagal
-  }
-
-  /**
-   * Pre-fetch artikel berikutnya di background agar terasa instan saat diklik.
-   */
-  async prefetchWikiFact() {
-    if (this.isFetchingWiki) return;
-    this.isFetchingWiki = true;
-    try {
-      const fact = await this.fetchWikiFact();
-      this.prefetchedWikiFact = fact; // null jika gagal → akan fallback ke lokal
-    } finally {
-      this.isFetchingWiki = false;
-    }
-  }
 
   /* ==========================================
      FOKUS UTAMA: PENGAJAK ILMU EDUKASI ACAK
@@ -306,7 +244,7 @@ class EdukasiApp {
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; gap: 12px;">
             <div class="marquee-container">
               <div class="marquee-text">
-                ${fact.categoryName.toUpperCase()}
+                ${fact.isLive ? `<span class="live-badge" style="display:inline-flex;align-items:center;gap:5px;background:${fact.sourceColor || '#00f2fe'}22;color:${fact.sourceColor || '#00f2fe'};border:1px solid ${fact.sourceColor || '#00f2fe'}55;border-radius:999px;padding:2px 9px;font-size:0.7rem;font-weight:700;letter-spacing:0.5px;margin-right:8px;"><span class="live-dot" style="width:6px;height:6px;border-radius:50%;background:${fact.sourceColor || '#00f2fe'};animation:livePulse 1.5s ease-in-out infinite;"></span>${fact.sourceIcon || '🌐'} ${fact.sourceLabel || 'LIVE'}</span>` : ''}${fact.categoryName.toUpperCase()}
               </div>
             </div>
             <!-- Tombol Aksi TTS dan Share (Ikon) -->
@@ -326,8 +264,15 @@ class EdukasiApp {
           ${fact.title}
         </h1>
         
+        ${fact.imageUrl ? `
+        <!-- Gambar NASA APOD -->
+        <div class="nasa-image-wrapper">
+          <img src="${fact.imageUrl}" alt="${fact.title}" loading="lazy" />
+          <div class="nasa-image-credit">📸 NASA Astronomy Picture of the Day</div>
+        </div>` : ''}
+        
         <!-- Inti Wawasan / Quote (Fokus Utama Tanpa Emoji) -->
-        <blockquote style="margin: 0 0 14px 0; padding: clamp(12px, 3vw, 18px); background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(37, 99, 235, 0.04) 100%); border-left: 4px solid #00F2FE; border-radius: 0 12px 12px 0; font-size: clamp(1rem, 3vw, 1.15rem); color: #fff; font-weight: 600; line-height: 1.7; text-align: left;">
+        <blockquote style="margin: 0 0 14px 0; padding: clamp(12px, 3vw, 18px); background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(37, 99, 235, 0.04) 100%); border-left: 4px solid ${fact.sourceColor || '#00F2FE'}; border-radius: 0 12px 12px 0; font-size: clamp(1rem, 3vw, 1.15rem); color: #fff; font-weight: 600; line-height: 1.7; text-align: left;">
           "${fact.shortSummary}"
         </blockquote>
 
@@ -347,13 +292,13 @@ class EdukasiApp {
             
             <div style="margin-top: 12px; background: rgba(255, 255, 255, 0.03); border-left: 3px solid #60a5fa; padding: 10px 14px; border-radius: 0 8px 8px 0; text-align: left;">
               <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #60a5fa; font-weight: 700; margin-bottom: 4px;">Catatan Kritis & Analisis Tambahan</div>
-              <div style="color: var(--text-primary); font-weight: 500; font-size: clamp(0.9rem, 2.8vw, 0.95rem); line-height: 1.6;">${fact.funFact}</div>
+              <div style="color: var(--text-primary); font-weight: 500; font-size: clamp(0.9rem, 2.8vw, 0.95rem); line-height: 1.6;">${formatText(fact.funFact)}</div>
             </div>
             
             <div style="margin-top: 10px; opacity: 0.85;">
               <div class="reference-badge" onclick="this.classList.toggle('expanded')" title="Ketuk untuk melihat full referensi">
                 <div class="reference-content">
-                  <span class="reference-text">Referensi: <a href="https://www.google.com/search?q=${encodeURIComponent(fact.source + ' ' + fact.title)}" target="_blank" onclick="event.stopPropagation()" title="Buka sumber referensi di tab baru" style="color: #fff; font-weight: 700; text-decoration: none;">${fact.source}</a></span>
+                  <span class="reference-text">Referensi: <a href="${fact.sourceUrl || `https://www.google.com/search?q=${encodeURIComponent(fact.source + ' ' + fact.title)}`}" target="_blank" onclick="event.stopPropagation()" title="Buka sumber referensi di tab baru" style="color: #fff; font-weight: 700; text-decoration: none;">${fact.source}</a></span>
                 </div>
                 <svg class="reference-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
@@ -389,46 +334,68 @@ class EdukasiApp {
       try { window.speechSynthesis.cancel(); } catch(e){}
     }
 
-    // Jika ada artikel Wikipedia yang sudah di-prefetch, gunakan itu
-    if (this.prefetchedWikiFact) {
-      const fact = this.prefetchedWikiFact;
-      this.prefetchedWikiFact = null;
-      // Langsung tampilkan artikel live
-      container.innerHTML = this.createExpandedScanCardHTML(fact);
-      this.bindScanCardButtons(container, fact);
-      // Pre-fetch berikutnya di background
-      this.prefetchWikiFact();
-      return;
-    }
+    const engine = window.apiEngine;
 
-    // Jika sedang fetch (belum selesai), tampilkan loading sebentar lalu tunggu
-    if (this.isFetchingWiki) {
-      container.innerHTML = this.createLoadingHTML();
-      const fact = await this.fetchWikiFact();
+    // Jika ApiEngine tersedia, coba ambil konten live
+    if (engine) {
+      // Jika queue sudah ada isi → tampilkan instan (sudah di-prefetch)
+      if (engine.prefetchQueue.length > 0) {
+        const fact = await engine.getNextFact();
+        if (fact) {
+          container.innerHTML = this.createExpandedScanCardHTML(fact);
+          this.bindScanCardButtons(container, fact);
+          return;
+        }
+      }
+
+      // Queue kosong → tampilkan loading, fetch sekarang
+      const nextSource = engine.sources[engine.currentSourceIndex];
+      container.innerHTML = this.createLoadingHTML(nextSource);
+
+      const fact = await engine.getNextFact();
       if (fact) {
         container.innerHTML = this.createExpandedScanCardHTML(fact);
         this.bindScanCardButtons(container, fact);
-        this.prefetchWikiFact();
         return;
       }
     }
 
-    // Fallback: gunakan data lokal
+    // Fallback: gunakan data lokal jika semua API gagal
+    this.showToast('⚠️ Koneksi terbatas — menampilkan fakta lokal');
     this.showScanFact('random');
-    // Coba prefetch Wikipedia lagi di background
-    this.prefetchWikiFact();
   }
 
-  createLoadingHTML() {
+  createLoadingHTML(sourceName = '') {
+    const sourceLabels = {
+      wikipedia: { label: 'Wikipedia Indonesia', icon: '📖', color: '#3b82f6' },
+      nasa:      { label: 'NASA APOD',           icon: '🚀', color: '#f97316' },
+      trivia:    { label: 'Open Trivia DB',      icon: '🎯', color: '#8b5cf6' },
+      numbers:   { label: 'Numbers API',         icon: '🔢', color: '#10b981' },
+      quotable:  { label: 'Quotable',            icon: '💬', color: '#ec4899' },
+      wikidata:  { label: 'Wikidata',            icon: '🌐', color: '#06b6d4' },
+    };
+    const src   = sourceLabels[sourceName] || { label: 'Multi-Source API', icon: '🌐', color: '#00F2FE' };
+    const color = src.color;
+
     return `
       <article class="featured-fact-card" style="width:100%;max-width:100%;margin:0 auto;padding:clamp(20px,4vw,40px);border:1px solid var(--glass-border);border-radius:24px;background:var(--glass-bg);backdrop-filter:blur(24px);box-shadow:0 20px 50px rgba(0,0,0,0.4);min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
+        <div style="font-size:2.5rem;animation:spinPulse 1.5s ease-in-out infinite;">${src.icon}</div>
         <div style="display:flex;gap:8px;">
-          <span style="width:10px;height:10px;border-radius:50%;background:#00F2FE;animation:bounce 0.8s ease-in-out infinite;"></span>
-          <span style="width:10px;height:10px;border-radius:50%;background:#00F2FE;animation:bounce 0.8s ease-in-out 0.15s infinite;"></span>
-          <span style="width:10px;height:10px;border-radius:50%;background:#00F2FE;animation:bounce 0.8s ease-in-out 0.3s infinite;"></span>
+          <span style="width:10px;height:10px;border-radius:50%;background:${color};animation:bounce 0.8s ease-in-out infinite;"></span>
+          <span style="width:10px;height:10px;border-radius:50%;background:${color};animation:bounce 0.8s ease-in-out 0.15s infinite;"></span>
+          <span style="width:10px;height:10px;border-radius:50%;background:${color};animation:bounce 0.8s ease-in-out 0.3s infinite;"></span>
         </div>
-        <p style="color:var(--text-secondary);font-size:0.95rem;margin:0;">Mengambil wawasan baru dari Wikipedia...</p>
-        <style>@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}</style>
+        <div style="text-align:center;">
+          <p style="color:var(--text-primary);font-size:1rem;font-weight:700;margin:0 0 6px 0;">Mengambil Wawasan Baru...</p>
+          <p style="color:${color};font-size:0.85rem;font-weight:600;margin:0;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:${color};animation:livePulse 1.5s ease-in-out infinite;"></span>
+            ${src.icon} ${src.label}
+          </p>
+        </div>
+        <style>
+          @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+          @keyframes spinPulse{0%,100%{transform:scale(1) rotate(0deg);opacity:1}50%{transform:scale(1.15) rotate(5deg);opacity:0.7}}
+        </style>
       </article>
     `;
   }
