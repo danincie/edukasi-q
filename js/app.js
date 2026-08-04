@@ -7,11 +7,9 @@ class EdukasiApp {
     this.lastRandomId = null;
     this.audioCtx = null;
     this.shuffleDeck = [];
-    this.recentHistory = [];   // Hafal ID fakta yang baru saja ditampilkan
-    this.lastCategory = null;  // Hafal kategori terakhir (cegah monoton)
+    this.recentHistory = [];
+    this.lastCategory = null;
 
-    // Multi-Source API Engine (diinisialisasi di api-engine.js)
-    // Referensi ke window.apiEngine yang sudah siap
 
     this.init();
   }
@@ -23,7 +21,6 @@ class EdukasiApp {
       this.setupHeaderActions();
       this.setupQrModalActions();
       
-      // Tampilkan fakta edukasi acak secara langsung!
       this.showScanFact('random', true);
       
       console.log('💡 EdukasiQ Siap! Total Fakta Lokal:', this.facts.length, '| API Engine:', window.apiEngine ? 'Aktif ✅' : 'Tidak tersedia ⚠️');
@@ -130,9 +127,9 @@ class EdukasiApp {
         osc.stop(now + 0.15);
       } else if (type === 'chime') {
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(523.25, now); // C5
-        osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
-        osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+        osc.frequency.setValueAtTime(523.25, now);
+        osc.frequency.setValueAtTime(659.25, now + 0.1);
+        osc.frequency.setValueAtTime(783.99, now + 0.2);
         gain.gain.setValueAtTime(0.2, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
         osc.start(now);
@@ -170,56 +167,44 @@ class EdukasiApp {
     }
 
     // ================================================
-    // ALGORITMA SMART SHUFFLE UNLIMITED:
-    // Fisher-Yates + History-Aware + Category-Aware
     // ================================================
 
-    // Ukuran history: simpan 1/3 dari total fakta (min 3, max 8)
     const HISTORY_SIZE = Math.min(8, Math.max(3, Math.floor(this.facts.length / 3)));
 
-    // Isi ulang deck jika habis
     if (!this.shuffleDeck || this.shuffleDeck.length === 0) {
-      // Fisher-Yates Shuffle
       this.shuffleDeck = [...this.facts];
       for (let i = this.shuffleDeck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [this.shuffleDeck[i], this.shuffleDeck[j]] = [this.shuffleDeck[j], this.shuffleDeck[i]];
       }
-      // Buang fakta yang baru saja ditampilkan dari awal deck (hindari pengulangan di batas siklus)
       if (this.recentHistory.length > 0) {
         const recentSet = new Set(this.recentHistory);
-        // Pindahkan fakta dari history ke belakang deck
         const safe = this.shuffleDeck.filter(f => !recentSet.has(f.id));
         const recent = this.shuffleDeck.filter(f => recentSet.has(f.id));
-        this.shuffleDeck = [...recent, ...safe]; // recent di belakang (diambil terakhir)
+        this.shuffleDeck = [...recent, ...safe];
       }
     }
 
-    // Pilih fakta berikutnya — cegah kategori yang sama muncul 2x berturut-turut
     let fact = null;
     for (let attempt = this.shuffleDeck.length - 1; attempt >= 0; attempt--) {
       const candidate = this.shuffleDeck[attempt];
       if (candidate.categoryName !== this.lastCategory) {
-        // Ambil kandidat ini dari deck
         this.shuffleDeck.splice(attempt, 1);
         fact = candidate;
         break;
       }
     }
-    // Fallback: jika semua sisa deck kategorinya sama (deck hampir habis), ambil yang teratas
     if (!fact) {
       fact = this.shuffleDeck.pop();
     }
 
-    // Update history
     this.lastRandomId = fact.id;
     this.lastCategory = fact.categoryName;
     this.recentHistory.push(fact.id);
     if (this.recentHistory.length > HISTORY_SIZE) {
-      this.recentHistory.shift(); // Hapus entri paling lama
+      this.recentHistory.shift();
     }
 
-    // Hentikan suara jika sedang berbicara
     if ('speechSynthesis' in window) {
       try { window.speechSynthesis.cancel(); } catch(e){}
     }
@@ -229,10 +214,8 @@ class EdukasiApp {
   }
 
   createExpandedScanCardHTML(fact) {
-    // Parser markdown sederhana untuk format teks tebal (**teks**)
     const formatText = (text) => (text || '').replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--text-primary); font-weight: 700;">$1</strong>');
 
-    // Ambil hanya paragraf pertama dari penjelasan agar singkat dan mudah dicerna
     const briefText = formatText((fact.fullExplanation || '').split('\n\n')[0].split('\n')[0]);
     const fullExpHTML = formatText(fact.fullExplanation);
 
@@ -336,9 +319,7 @@ class EdukasiApp {
 
     const engine = window.apiEngine;
 
-    // Jika ApiEngine tersedia, coba ambil konten live
     if (engine) {
-      // Jika queue sudah ada isi → tampilkan instan (sudah di-prefetch)
       if (engine.prefetchQueue.length > 0) {
         const fact = await engine.getNextFact();
         if (fact) {
@@ -348,7 +329,6 @@ class EdukasiApp {
         }
       }
 
-      // Queue kosong → tampilkan loading, fetch sekarang
       const nextSource = engine.sources[engine.currentSourceIndex];
       container.innerHTML = this.createLoadingHTML(nextSource);
 
@@ -360,7 +340,6 @@ class EdukasiApp {
       }
     }
 
-    // Fallback: gunakan data lokal jika semua API gagal
     this.showToast('⚠️ Koneksi terbatas — menampilkan fakta lokal');
     this.showScanFact('random');
   }
@@ -405,13 +384,10 @@ class EdukasiApp {
     const sharePortalBtn = parentEl.querySelector('.btn-share-portal');
     const randomBtnInside = parentEl.querySelector('#scanRandomBtnInside');
 
-    // Cek apakah teks marquee terlalu panjang dan butuh berjalan
     const marqueeContainer = parentEl.querySelector('.marquee-container');
     const marqueeText = parentEl.querySelector('.marquee-text');
     if (marqueeContainer && marqueeText) {
-      // Gunakan setTimeout agar browser selesai me-render dan menghitung layout
       setTimeout(() => {
-        // Buat clone rahasia tanpa batasan CSS untuk mengukur dimensi asli teks secara 100% akurat
         const clone = marqueeText.cloneNode(true);
         clone.style.position = 'absolute';
         clone.style.visibility = 'hidden';
@@ -520,12 +496,10 @@ class EdukasiApp {
      TOAST NOTIFICATION FEEDBACK
      ========================================== */
   showToast(message) {
-    // Dinonaktifkan sesuai permintaan: notifikasi (toast) dianggap mengganggu
     return;
   }
 }
 
-// Inisialisasi Aplikasi EdukasiQ
 const edukasiApp = new EdukasiApp();
 if (typeof window !== 'undefined') {
   window.edukasiApp = edukasiApp;

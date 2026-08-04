@@ -18,7 +18,6 @@
 
 class ApiEngine {
   constructor() {
-    // Rotasi sumber: setiap klik berpindah ke sumber berikutnya
     this.sources = [
       'wikipedia',
       'nasa',
@@ -29,15 +28,12 @@ class ApiEngine {
     ];
     this.currentSourceIndex = 0;
 
-    // Pre-fetch queue: selalu siapkan konten berikutnya di background
     this.prefetchQueue = [];
     this.MAX_QUEUE_SIZE = 3;
     this.isFetching = false;
 
-    // Tracking sumber yang gagal agar skip
     this.failedSources = new Set();
 
-    // Cache terjemahan agar tidak double-request
     this.translationCache = new Map();
 
     console.log('🌐 EdukasiQ API Engine siap — 6 sumber live aktif!');
@@ -122,7 +118,6 @@ class ApiEngine {
      ============================================= */
 
   async fetchFromWikipedia(retries = 8) {
-    // Kata kunci yang DIBLOKIR — hiburan, selebriti, game, olahraga non-edukatif
     const BLOCKED = [
       'aktor', 'aktris', 'penyanyi', 'musisi', 'band', 'album', 'lagu', 'film',
       'sinetron', 'serial televisi', 'anime', 'manga', 'komik strip', 'youtuber',
@@ -145,10 +140,8 @@ class ApiEngine {
         const desc    = (data.description || '').toLowerCase();
         const title   = (data.title || '').toLowerCase();
 
-        // Filter dasar
         if (extract.length < 200 || data.type === 'disambiguation' || !data.title) continue;
 
-        // Blokir konten tidak edukatif
         const isBlocked = BLOCKED.some(kw => desc.includes(kw) || title.includes(kw));
         if (isBlocked) continue;
 
@@ -174,7 +167,6 @@ class ApiEngine {
           quiz: [],
         };
       } catch (e) {
-        // retry
       }
     }
     return null;
@@ -231,10 +223,6 @@ class ApiEngine {
 
   async fetchFromTrivia() {
     try {
-      // Hanya kategori edukatif murni:
-      // 17 = Sains & Alam      27 = Hewan & Ekologi
-      // 18 = Teknologi Komputer 22 = Geografi & Bumi
-      // 19 = Matematika         23 = Sejarah Peradaban
       const EDU_CATS = [
         { id: 17, label: 'Sains & Alam',        icon: '🔬' },
         { id: 18, label: 'Teknologi & Komputer', icon: '💻' },
@@ -355,7 +343,6 @@ class ApiEngine {
      ============================================= */
 
   async fetchFromQuotable(retries = 4) {
-    // Hanya tag edukatif & ilmiah
     const EDU_TAGS = [
       { tag: 'science',      label: '🔭 Sains',           desc: 'ilmu pengetahuan dan sains' },
       { tag: 'education',    label: '🎓 Pendidikan',       desc: 'pendidikan dan pembelajaran' },
@@ -403,7 +390,6 @@ class ApiEngine {
           quiz: [],
         };
       } catch (e) {
-        // retry
       }
     }
     return null;
@@ -415,7 +401,6 @@ class ApiEngine {
 
   async fetchFromWikidata() {
     try {
-      // Query SPARQL bertema edukatif — lingkungan, sains, sejarah, kesehatan
       const EDU_QUERIES = [
         {
           label: '🌿 Fauna Terancam Punah',
@@ -629,10 +614,8 @@ class ApiEngine {
   }
 }
 
-// Inisialisasi global
 window.apiEngine = new ApiEngine();
 
-// Pre-fetch di background saat halaman load
 document.addEventListener('DOMContentLoaded', () => {
   if (window.apiEngine) {
     setTimeout(() => window.apiEngine.fillPrefetchQueue(), 1500);

@@ -86,22 +86,18 @@ class QrStudio {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     
-    // Resolusi tinggi bersih (500 x 580 px)
     const width = 500;
     const height = 580;
     canvas.width = width;
     canvas.height = height;
 
-    // 1. Latar belakang putih bersih
     ctx.fillStyle = '#FFFFFF';
     this.roundRect(ctx, 0, 0, width, height, 32, true, false);
 
-    // 2. Gambar bingkai tipis elegan
     ctx.lineWidth = 12;
     ctx.strokeStyle = '#00F2FE';
     this.roundRect(ctx, 12, 12, width - 24, height - 24, 24, false, true);
 
-    // 3. Gambar QR Code di tengah
     const qrImage = new Image();
     qrImage.src = this.qrCanvas.toDataURL('image/png');
     qrImage.onload = () => {
@@ -111,7 +107,6 @@ class QrStudio {
       
       ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
 
-      // 4. Teks Nama Web di bawah QR Code
       ctx.fillStyle = '#0F172A';
       ctx.font = '800 32px "Outfit", sans-serif';
       ctx.textAlign = 'center';
@@ -121,7 +116,6 @@ class QrStudio {
       ctx.font = '700 18px "Plus Jakarta Sans", sans-serif';
       ctx.fillText('Scan untuk Wawasan Ilmu Baru', width / 2, 515);
 
-      // 5. Unduh File Gambar PNG
       const link = document.createElement('a');
       link.download = `QR-Code-EdukasiQ-${Date.now()}.png`;
       link.href = canvas.toDataURL('image/png');
@@ -184,7 +178,6 @@ class QrStudio {
         console.log('Share error or cancelled:', e);
       });
     } else {
-      // Fallback: Langsung buka WhatsApp Share di browser/desktop
       const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`;
       window.open(waUrl, '_blank');
       this.showToast('💬 Membuka WhatsApp untuk membagikan wawasan!');
