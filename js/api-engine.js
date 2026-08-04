@@ -121,7 +121,18 @@ class ApiEngine {
      SUMBER 1: WIKIPEDIA BAHASA INDONESIA
      ============================================= */
 
-  async fetchFromWikipedia(retries = 3) {
+  async fetchFromWikipedia(retries = 8) {
+    // Kata kunci yang DIBLOKIR — hiburan, selebriti, game, olahraga non-edukatif
+    const BLOCKED = [
+      'aktor', 'aktris', 'penyanyi', 'musisi', 'band', 'album', 'lagu', 'film',
+      'sinetron', 'serial televisi', 'anime', 'manga', 'komik strip', 'youtuber',
+      'influencer', 'selebgram', 'artis', 'idol', 'boyband', 'girlband', 'rapper',
+      'video game', 'permainan video', 'esports', 'pemain sepak bola',
+      'pesepakbola', 'pesepak bola', 'pemain basket', 'pemain baseball',
+      'tokoh fiksi', 'karakter fiksi', 'tokoh dalam', 'episode', 'soundtrack',
+      'vlogger', 'streamer', 'content creator', 'model', 'presenter televisi',
+    ];
+
     for (let i = 0; i < retries; i++) {
       try {
         const res = await this._fetch(
@@ -131,10 +142,18 @@ class ApiEngine {
         const data = await res.json();
 
         const extract = (data.extract || '').trim();
-        if (extract.length < 150 || data.type === 'disambiguation' || !data.title) continue;
+        const desc    = (data.description || '').toLowerCase();
+        const title   = (data.title || '').toLowerCase();
+
+        // Filter dasar
+        if (extract.length < 200 || data.type === 'disambiguation' || !data.title) continue;
+
+        // Blokir konten tidak edukatif
+        const isBlocked = BLOCKED.some(kw => desc.includes(kw) || title.includes(kw));
+        if (isBlocked) continue;
 
         const firstSentence = extract.split(/\.\s+/)[0] + '.';
-        const shortSummary = firstSentence.length > 220
+        const shortSummary  = firstSentence.length > 220
           ? firstSentence.substring(0, 217) + '...'
           : firstSentence;
 
@@ -212,17 +231,30 @@ class ApiEngine {
 
   async fetchFromTrivia() {
     try {
-      const categories = [17, 18, 19, 22, 23, 30];
-      const cat = categories[Math.floor(Math.random() * categories.length)];
+      // Hanya kategori edukatif murni:
+      // 17 = Sains & Alam      27 = Hewan & Ekologi
+      // 18 = Teknologi Komputer 22 = Geografi & Bumi
+      // 19 = Matematika         23 = Sejarah Peradaban
+      const EDU_CATS = [
+        { id: 17, label: 'Sains & Alam',        icon: '🔬' },
+        { id: 18, label: 'Teknologi & Komputer', icon: '💻' },
+        { id: 19, label: 'Matematika',           icon: '📐' },
+        { id: 22, label: 'Geografi & Bumi',      icon: '🌍' },
+        { id: 23, label: 'Sejarah & Peradaban',  icon: '🏛️' },
+        { id: 17, label: 'Sains & Alam',         icon: '🔬' }, // bobot lebih tinggi
+        { id: 22, label: 'Geografi & Bumi',      icon: '🌍' }, // bobot lebih tinggi
+        { id: 27, label: 'Zoologi & Ekologi',    icon: '🦁' },
+      ];
+      const chosen = EDU_CATS[Math.floor(Math.random() * EDU_CATS.length)];
 
       const res = await this._fetch(
-        `https://opentdb.com/api.php?amount=1&category=${cat}&type=multiple&encode=url3986`
+        `https://opentdb.com/api.php?amount=1&category=${chosen.id}&type=multiple&encode=url3986`
       );
       const json = await res.json();
 
       if (json.response_code !== 0 || !json.results?.length) return null;
 
-      const item = json.results[0];
+      const item   = json.results[0];
       const decode = (s) => decodeURIComponent(s);
 
       const rawQ       = decode(item.question);
@@ -247,13 +279,13 @@ class ApiEngine {
       return {
         id: `trivia-${Date.now()}`,
         sourceLabel: 'Open Trivia DB',
-        sourceIcon: '🎯',
+        sourceIcon: chosen.icon,
         sourceColor: '#8b5cf6',
-        categoryName: catID,
+        categoryName: `${chosen.icon} ${chosen.label}`,
         title: questionID,
-        shortSummary: `Pertanyaan Trivia: ${questionID.length > 180 ? questionID.substring(0, 177) + '...' : questionID}`,
+        shortSummary: `Fakta Ilmu: ${questionID.length > 180 ? questionID.substring(0, 177) + '...' : questionID}`,
         fullExplanation: `${questionID}\n\nPilihan jawaban:\n${optsID.map((o, i) => `${i + 1}. ${o}`).join('\n')}\n\n✅ Jawaban benar: **${correctID}**`,
-        funFact: `Fakta dari Open Trivia DB — database trivia komunitas global dengan ratusan ribu pertanyaan terverifikasi. Tingkat kesulitan: ${diffLabel}.`,
+        funFact: `Fakta ilmu pengetahuan dari Open Trivia DB — dikurasi komunitas akademik global. Kategori: **${chosen.label}**. Tingkat kesulitan: ${diffLabel}.`,
         source: `Open Trivia DB — ${rawCat}`,
         sourceUrl: 'https://opentdb.com/',
         isLive: true,
@@ -261,7 +293,7 @@ class ApiEngine {
           question: questionID,
           options: optsID,
           correctAnswer: correctIdx >= 0 ? correctIdx : 0,
-          explanation: `Jawaban benar: **${correctID}**. Pertanyaan ini dikategorikan sebagai tingkat ${diffLabel}.`,
+          explanation: `Jawaban benar: **${correctID}**. Kategori: ${chosen.label}, tingkat ${diffLabel}.`,
         }] : [],
       };
     } catch (e) {
@@ -322,14 +354,27 @@ class ApiEngine {
      SUMBER 5: QUOTABLE
      ============================================= */
 
-  async fetchFromQuotable(retries = 3) {
+  async fetchFromQuotable(retries = 4) {
+    // Hanya tag edukatif & ilmiah
+    const EDU_TAGS = [
+      { tag: 'science',      label: '🔭 Sains',           desc: 'ilmu pengetahuan dan sains' },
+      { tag: 'education',    label: '🎓 Pendidikan',       desc: 'pendidikan dan pembelajaran' },
+      { tag: 'knowledge',    label: '📚 Ilmu Pengetahuan', desc: 'ilmu dan wawasan' },
+      { tag: 'philosophy',   label: '🧠 Filsafat',         desc: 'filsafat dan pemikiran' },
+      { tag: 'technology',   label: '💡 Teknologi',        desc: 'teknologi dan inovasi' },
+      { tag: 'nature',       label: '🌿 Alam',             desc: 'alam dan lingkungan' },
+      { tag: 'mathematics',  label: '📐 Matematika',       desc: 'matematika dan logika' },
+      { tag: 'medicine',     label: '🏥 Kesehatan',        desc: 'kesehatan dan kedokteran' },
+      { tag: 'wisdom',       label: '🌟 Kebijaksanaan',    desc: 'kebijaksanaan hidup' },
+      { tag: 'environment',  label: '🌍 Lingkungan',       desc: 'lingkungan dan ekologi' },
+    ];
+
     for (let i = 0; i < retries; i++) {
       try {
-        const tags = ['wisdom', 'inspirational', 'science', 'education', 'knowledge', 'philosophy'];
-        const tag  = tags[Math.floor(Math.random() * tags.length)];
+        const chosen = EDU_TAGS[Math.floor(Math.random() * EDU_TAGS.length)];
 
         const res  = await this._fetch(
-          `https://api.quotable.kurokeita.dev/api/quotes/random?tags=${tag}`
+          `https://api.quotable.kurokeita.dev/api/quotes/random?tags=${chosen.tag}`
         );
         const data = await res.json();
 
@@ -347,11 +392,11 @@ class ApiEngine {
           sourceLabel: 'Quotable',
           sourceIcon: '💬',
           sourceColor: '#ec4899',
-          categoryName: 'Inspirasi & Kebijaksanaan',
+          categoryName: chosen.label,
           title: `"${contentID}"`,
           shortSummary: contentID.length > 220 ? contentID.substring(0, 217) + '...' : contentID,
-          fullExplanation: `"${contentID}"\n\n— ${rawAuthor}\n\nKutipan ini mencerminkan kebijaksanaan yang telah menginspirasi jutaan orang di seluruh dunia.${rawTags ? ` Kategori: ${rawTags}.` : ''}`,
-          funFact: `Kutipan ini diucapkan oleh **${rawAuthor}** — tokoh berpengaruh yang kata-katanya terus menginspirasi generasi hingga hari ini.`,
+          fullExplanation: `"${contentID}"\n\n— ${rawAuthor}\n\nKutipan ini mencerminkan pandangan mendalam tentang ${chosen.desc} yang sangat relevan untuk memperluas wawasan dan mendorong semangat belajar.${rawTags ? ` Tema: ${rawTags}.` : ''}`,
+          funFact: `Kutipan ini diungkapkan oleh **${rawAuthor}** — ilmuwan, filsuf, atau pemikir besar yang kontribusinya telah mengubah cara pandang manusia terhadap dunia.`,
           source: `Quotable — ${rawAuthor}`,
           sourceUrl: 'https://github.com/lukePeavey/quotable',
           isLive: true,
@@ -370,30 +415,88 @@ class ApiEngine {
 
   async fetchFromWikidata() {
     try {
-      const queries = [
-        `SELECT ?label ?description WHERE {
-          ?item wdt:P31 wd:Q16521 .
-          ?item rdfs:label ?label FILTER (lang(?label) = "id") .
-          OPTIONAL { ?item schema:description ?description FILTER (lang(?description) = "id") }
-          FILTER(BOUND(?description))
-        } ORDER BY RAND() LIMIT 1`,
-        `SELECT ?label ?description WHERE {
-          ?item wdt:P31 wd:Q5 .
-          ?item wdt:P106 wd:Q901 .
-          ?item rdfs:label ?label FILTER (lang(?label) = "id") .
-          OPTIONAL { ?item schema:description ?description FILTER (lang(?description) = "id") }
-          FILTER(BOUND(?description))
-        } ORDER BY RAND() LIMIT 1`,
-        `SELECT ?label ?description WHERE {
-          ?item wdt:P31 wd:Q3624078 .
-          ?item rdfs:label ?label FILTER (lang(?label) = "id") .
-          OPTIONAL { ?item schema:description ?description FILTER (lang(?description) = "id") }
-          FILTER(BOUND(?description))
-        } ORDER BY RAND() LIMIT 1`,
+      // Query SPARQL bertema edukatif — lingkungan, sains, sejarah, kesehatan
+      const EDU_QUERIES = [
+        {
+          label: '🌿 Fauna Terancam Punah',
+          query: `SELECT ?label ?description WHERE {
+            ?item wdt:P31 wd:Q16521 .
+            ?item wdt:P141 ?status .
+            VALUES ?status { wd:Q11394 wd:Q219127 wd:Q278113 }
+            ?item rdfs:label ?label FILTER (lang(?label) = "id") .
+            ?item schema:description ?description FILTER (lang(?description) = "id")
+            FILTER(STRLEN(?description) > 25)
+          } ORDER BY RAND() LIMIT 1`,
+        },
+        {
+          label: '🔬 Penemuan Ilmiah',
+          query: `SELECT ?label ?description WHERE {
+            ?item wdt:P31 wd:Q47574 .
+            ?item rdfs:label ?label FILTER (lang(?label) = "id") .
+            ?item schema:description ?description FILTER (lang(?description) = "id")
+            FILTER(STRLEN(?description) > 25)
+          } ORDER BY RAND() LIMIT 1`,
+        },
+        {
+          label: '🌋 Fenomena Alam',
+          query: `SELECT ?label ?description WHERE {
+            ?item wdt:P31 wd:Q169930 .
+            ?item rdfs:label ?label FILTER (lang(?label) = "id") .
+            ?item schema:description ?description FILTER (lang(?description) = "id")
+            FILTER(STRLEN(?description) > 25)
+          } ORDER BY RAND() LIMIT 1`,
+        },
+        {
+          label: '🏆 Ilmuwan & Penemu',
+          query: `SELECT ?label ?description WHERE {
+            ?item wdt:P31 wd:Q5 .
+            ?item wdt:P106 wd:Q901 .
+            ?item wdt:P166 [] .
+            ?item rdfs:label ?label FILTER (lang(?label) = "id") .
+            ?item schema:description ?description FILTER (lang(?description) = "id")
+            FILTER(STRLEN(?description) > 25)
+          } ORDER BY RAND() LIMIT 1`,
+        },
+        {
+          label: '💊 Kesehatan & Penyakit',
+          query: `SELECT ?label ?description WHERE {
+            ?item wdt:P31 wd:Q12136 .
+            ?item rdfs:label ?label FILTER (lang(?label) = "id") .
+            ?item schema:description ?description FILTER (lang(?description) = "id")
+            FILTER(STRLEN(?description) > 25)
+          } ORDER BY RAND() LIMIT 1`,
+        },
+        {
+          label: '🌱 Botani & Tumbuhan',
+          query: `SELECT ?label ?description WHERE {
+            ?item wdt:P31 wd:Q756 .
+            ?item rdfs:label ?label FILTER (lang(?label) = "id") .
+            ?item schema:description ?description FILTER (lang(?description) = "id")
+            FILTER(STRLEN(?description) > 25)
+          } ORDER BY RAND() LIMIT 1`,
+        },
+        {
+          label: '⚗️ Unsur Kimia',
+          query: `SELECT ?label ?description WHERE {
+            ?item wdt:P31 wd:Q11344 .
+            ?item rdfs:label ?label FILTER (lang(?label) = "id") .
+            ?item schema:description ?description FILTER (lang(?description) = "id")
+            FILTER(STRLEN(?description) > 20)
+          } ORDER BY RAND() LIMIT 1`,
+        },
+        {
+          label: '🌊 Geografi & Alam',
+          query: `SELECT ?label ?description WHERE {
+            ?item wdt:P31 wd:Q23397 .
+            ?item rdfs:label ?label FILTER (lang(?label) = "id") .
+            ?item schema:description ?description FILTER (lang(?description) = "id")
+            FILTER(STRLEN(?description) > 20)
+          } ORDER BY RAND() LIMIT 1`,
+        },
       ];
 
-      const query = queries[Math.floor(Math.random() * queries.length)];
-      const url   = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}&format=json`;
+      const chosen = EDU_QUERIES[Math.floor(Math.random() * EDU_QUERIES.length)];
+      const url    = `https://query.wikidata.org/sparql?query=${encodeURIComponent(chosen.query)}&format=json`;
 
       const res  = await this._fetch(url, { headers: { Accept: 'application/sparql-results+json' } }, 10000);
       const json = await res.json();
@@ -412,11 +515,11 @@ class ApiEngine {
         sourceLabel: 'Wikidata',
         sourceIcon: '🌐',
         sourceColor: '#06b6d4',
-        categoryName: 'Pengetahuan Terstruktur',
+        categoryName: chosen.label,
         title: label,
         shortSummary: desc.length > 220 ? desc.substring(0, 217) + '...' : desc,
-        fullExplanation: `**${label}** — ${desc}\n\nData ini bersumber dari Wikidata, database pengetahuan terstruktur terbuka yang mendukung Wikipedia, Google Knowledge Graph, dan ratusan aplikasi global lainnya. Informasi ini dapat diverifikasi secara bebas oleh siapa saja.`,
-        funFact: 'Wikidata adalah proyek saudara Wikipedia yang menyimpan lebih dari 100 juta pernyataan fakta terstruktur dalam format yang dapat dibaca mesin maupun manusia.',
+        fullExplanation: `**${label}** — ${desc}\n\nData ini bersumber dari Wikidata, database pengetahuan terstruktur terbuka yang mendukung Wikipedia, Google Knowledge Graph, dan ratusan aplikasi global lainnya.`,
+        funFact: `Kategori **${chosen.label.replace(/[^\w\s&]/g, '').trim()}**: Wikidata menyimpan lebih dari 100 juta fakta terstruktur tentang alam, sains, kesehatan, dan sejarah — semuanya dapat diakses secara bebas.`,
         source: 'Wikidata — Wikimedia Foundation',
         sourceUrl: 'https://www.wikidata.org/',
         isLive: true,
