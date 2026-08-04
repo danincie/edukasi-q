@@ -1315,7 +1315,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 5vw;
+  padding: 24px 4vw;
   flex-wrap: wrap;
   gap: 20px;
 }
