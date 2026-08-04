@@ -1294,3 +1294,190 @@ body {
   background: rgba(255,255,255,0.07);
 }
 
+
+/* ==========================================
+   SITE FOOTER — MEDIA SOSIAL KKN PADEPOKAN 13
+   ========================================== */
+
+.site-footer {
+  margin-top: 80px;
+  padding-bottom: 48px;
+}
+
+.footer-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+}
+
+/* Garis dekoratif dengan ikon bintang di tengah */
+.footer-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.footer-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--glass-border), transparent);
+}
+
+.footer-divider-icon {
+  color: var(--accent-primary);
+  font-size: 1rem;
+  opacity: 0.7;
+  animation: livePulse 3s ease-in-out infinite;
+}
+
+/* Teks ajakan */
+.footer-tagline {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Container kartu sosial media */
+.footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Base kartu sosial media */
+.social-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 22px;
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  text-decoration: none;
+  flex: 1;
+  min-width: 220px;
+  max-width: 300px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  cursor: pointer;
+}
+
+.social-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Instagram — gradien ikonik */
+.social-instagram .social-icon-wrap {
+  background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: #fff;
+  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(220, 39, 67, 0.4);
+  transition: box-shadow 0.3s;
+}
+
+.social-instagram:hover {
+  border-color: rgba(220, 39, 67, 0.5);
+  box-shadow: 0 8px 28px rgba(220, 39, 67, 0.2);
+}
+
+.social-instagram:hover .social-icon-wrap {
+  box-shadow: 0 6px 20px rgba(220, 39, 67, 0.6);
+}
+
+/* TikTok — hitam & cyan ikonik */
+.social-tiktok .social-icon-wrap {
+  background: linear-gradient(135deg, #010101 0%, #1a1a2e 100%);
+  color: #69c9d0;
+  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(105, 201, 208, 0.35);
+  box-shadow: 0 4px 14px rgba(105, 201, 208, 0.25);
+  transition: box-shadow 0.3s;
+}
+
+.social-tiktok:hover {
+  border-color: rgba(105, 201, 208, 0.5);
+  box-shadow: 0 8px 28px rgba(105, 201, 208, 0.2);
+}
+
+.social-tiktok:hover .social-icon-wrap {
+  box-shadow: 0 6px 20px rgba(105, 201, 208, 0.5);
+}
+
+/* Info teks dalam kartu */
+.social-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  flex: 1;
+}
+
+.social-platform {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-tertiary);
+}
+
+.social-handle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+}
+
+/* Anak panah kanan */
+.social-arrow {
+  font-size: 1.2rem;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  transition: transform 0.25s ease, color 0.25s;
+}
+
+.social-card:hover .social-arrow {
+  transform: translateX(5px);
+  color: var(--text-secondary);
+}
+
+/* Copyright */
+.footer-copy {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Responsif mobile */
+@media (max-width: 480px) {
+  .footer-socials {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .social-card {
+    max-width: 100%;
+    min-width: 0;
+  }
+}
