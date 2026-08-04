@@ -1372,22 +1372,23 @@ body {
 
 @media (max-width: 768px) {
   .footer-bottom-micro {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
   }
   .footer-micro-left {
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 16px;
+    align-items: center;
+    gap: 12px;
   }
   .micro-copyright {
     border-left: none;
     padding-left: 0;
+    font-size: 0.7rem;
   }
   .footer-micro-right {
-    justify-content: flex-start;
-    width: 100%;
+    width: auto;
+    justify-content: flex-end;
   }
 }
