@@ -1298,136 +1298,92 @@ body {
 /* ==========================================
    SITE FOOTER — PREMIUM DARK MINIMALIST
    ========================================== */
+/* ==========================================
+   SITE FOOTER — ULTRA MINIMALIST (MICRO)
+   ========================================== */
 
 .site-footer {
   margin-top: 80px;
   width: 100%;
-  /* Memastikan footer selalu berwarna gelap premium (walaupun di light mode) agar elegan */
   background: rgba(15, 17, 23, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-  color: #94a3b8;
-  display: flex;
-  flex-direction: column;
 }
 
-/* --- Top Section: Social Media --- */
-.footer-top {
+.footer-bottom-micro {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 24px 5vw;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-.footer-social-title {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #ffffff;
-  letter-spacing: 0.5px;
+.footer-micro-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.footer-social-icons {
+.micro-logo {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.micro-logo:hover {
+  transform: scale(1.05);
+}
+
+.micro-copyright {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #94a3b8;
+  border-left: 1px solid rgba(255,255,255,0.1);
+  padding-left: 20px;
+}
+
+.footer-micro-right {
   display: flex;
   gap: 16px;
   align-items: center;
 }
 
-.footer-social-icons a {
+.footer-micro-right a {
   color: #94a3b8;
   transition: color 0.2s ease, transform 0.2s ease;
   display: flex;
 }
 
-.footer-social-icons a:hover {
+.footer-micro-right a:hover {
   color: #ffffff;
   transform: translateY(-2px);
 }
 
-.footer-social-icons a:hover .social-icon-ig {
-  color: #e1306c;
-}
-.footer-social-icons a:hover .social-icon-tt {
-  color: #69c9d0;
-}
+.social-icon-ig { transition: color 0.2s; }
+.social-icon-tt { transition: color 0.2s; }
+.footer-micro-right a:hover .social-icon-ig { color: #e1306c; }
+.footer-micro-right a:hover .social-icon-tt { color: #69c9d0; }
 
-/* --- Main Section: Logos and Links --- */
-.footer-main-clean {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32px 5vw;
-  flex-wrap: wrap;
-  gap: 32px;
-}
-
-.footer-logos-clean {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.footer-logos-clean img {
-  height: 64px; /* Ukuran yang ideal, tidak terlalu kecil */
-  width: auto;
-  object-fit: contain;
-  transition: transform 0.3s ease;
-  /* Dihapus: filter grayscale, agar warna asli logo (hijau, kuning) menonjol elegan di latar gelap */
-}
-
-.footer-logos-clean img:hover {
-  transform: scale(1.05);
-}
-
-.footer-links-clean {
-  display: flex;
-  gap: 32px;
-  flex-wrap: wrap;
-}
-
-.footer-links-clean a {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #94a3b8;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.footer-links-clean a:hover {
-  color: #ffffff;
-}
-
-/* --- Bottom Section: Copyright --- */
-.footer-bottom-clean {
-  padding: 20px 5vw;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 0.75rem;
-  color: #64748b;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* --- Responsif --- */
 @media (max-width: 768px) {
-  .footer-top {
+  .footer-bottom-micro {
     flex-direction: column;
-    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    gap: 24px;
+  }
+  .footer-micro-left {
+    flex-direction: column;
+    justify-content: center;
     gap: 16px;
   }
-  
-  .footer-main-clean {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .footer-links-clean {
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .footer-logos-clean img {
-    height: 52px;
+  .micro-copyright {
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-left: 0;
+    padding-top: 16px;
   }
 }
-
