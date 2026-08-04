@@ -1373,19 +1373,21 @@ body {
 @media (max-width: 768px) {
   .footer-bottom-micro {
     flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    gap: 24px;
+    align-items: flex-start;
+    gap: 16px;
   }
   .footer-micro-left {
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
     gap: 16px;
   }
   .micro-copyright {
     border-left: none;
-    border-top: 1px solid var(--glass-border);
     padding-left: 0;
-    padding-top: 16px;
+  }
+  .footer-micro-right {
+    justify-content: flex-start;
+    width: 100%;
   }
 }
