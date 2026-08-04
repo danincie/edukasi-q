@@ -240,7 +240,7 @@ class EdukasiApp {
       <article class="featured-fact-card" style="width: 100%; max-width: 100%; margin: 0 auto; padding: clamp(20px, 4vw, 40px); border: 1px solid var(--glass-border); border-radius: 24px; background: var(--glass-bg); backdrop-filter: blur(24px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); transition: all 0.3s ease;">
         
         <!-- Header Bar: Akreditasi & Referensi Ilmiah -->
-        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--glass-border);">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; gap: 12px;">
             <div class="marquee-container">
               <div class="marquee-text">
@@ -252,7 +252,7 @@ class EdukasiApp {
               <button id="tts-btn-${fact.id}" class="btn-secondary btn-tts-scan" style="width: 36px; height: 36px; padding: 0; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(0, 242, 254, 0.4); color: #00f2fe; background: rgba(0, 242, 254, 0.05); border-radius: 8px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
               </button>
-              <button class="btn-secondary btn-share-portal" style="width: 36px; height: 36px; padding: 0; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; background: rgba(255, 255, 255, 0.05); border-radius: 8px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;">
+              <button class="btn-secondary btn-share-portal" style="width: 36px; height: 36px; padding: 0; display: flex; justify-content: center; align-items: center; border: 1px solid var(--glass-border); color: var(--text-primary); background: var(--glass-bg); border-radius: 8px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
               </button>
             </div>
@@ -272,7 +272,7 @@ class EdukasiApp {
         </div>` : ''}
         
         <!-- Inti Wawasan / Quote (Fokus Utama Tanpa Emoji) -->
-        <blockquote style="margin: 0 0 14px 0; padding: clamp(12px, 3vw, 18px); background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(37, 99, 235, 0.04) 100%); border-left: 4px solid ${fact.sourceColor || '#00F2FE'}; border-radius: 0 12px 12px 0; font-size: clamp(1rem, 3vw, 1.15rem); color: #fff; font-weight: 600; line-height: 1.7; text-align: left;">
+        <blockquote style="margin: 0 0 14px 0; padding: clamp(12px, 3vw, 18px); background: var(--glass-bg); border-left: 4px solid ${fact.sourceColor || 'var(--accent-primary)'}; border-radius: 0 12px 12px 0; font-size: clamp(1rem, 3vw, 1.15rem); color: var(--text-primary); font-weight: 600; line-height: 1.7; text-align: left;">
           "${fact.shortSummary}"
         </blockquote>
 
@@ -282,23 +282,23 @@ class EdukasiApp {
         </div>
 
         <!-- Pilihan Opsi: Baca Penjelasan Mendalam (Collapse/Expand) -->
-        <details style="margin-bottom: 14px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); border-radius: 12px; padding: clamp(10px, 2.5vw, 14px) clamp(14px, 3.5vw, 18px); transition: background 0.3s;">
-          <summary style="cursor: pointer; font-size: clamp(0.85rem, 2.5vw, 0.9rem); font-weight: 700; color: #00F2FE; outline: none; list-style: none; display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
+        <details style="margin-bottom: 14px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: clamp(10px, 2.5vw, 14px) clamp(14px, 3.5vw, 18px); transition: background 0.3s;">
+          <summary style="cursor: pointer; font-size: clamp(0.85rem, 2.5vw, 0.9rem); font-weight: 700; color: var(--accent-primary); outline: none; list-style: none; display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.5px;">
             <span>BACA ANALISIS ILMIAH & PENJELASAN MENDALAM</span>
             <span style="font-size: 1.2rem; transition: transform 0.2s;">▾</span>
           </summary>
-          <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: clamp(0.95rem, 3vw, 1rem); color: var(--text-secondary); line-height: 1.7; text-align: justify; white-space: pre-line; word-spacing: 0.05em; letter-spacing: 0.2px;">
+          <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--glass-border); font-size: clamp(0.95rem, 3vw, 1rem); color: var(--text-secondary); line-height: 1.7; text-align: justify; white-space: pre-line; word-spacing: 0.05em; letter-spacing: 0.2px;">
             ${fullExpHTML}
             
-            <div style="margin-top: 12px; background: rgba(255, 255, 255, 0.03); border-left: 3px solid #60a5fa; padding: 10px 14px; border-radius: 0 8px 8px 0; text-align: left;">
-              <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #60a5fa; font-weight: 700; margin-bottom: 4px;">Catatan Kritis & Analisis Tambahan</div>
+            <div style="margin-top: 12px; background: var(--glass-bg); border-left: 3px solid var(--accent-primary); padding: 10px 14px; border-radius: 0 8px 8px 0; text-align: left;">
+              <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-primary); font-weight: 700; margin-bottom: 4px;">Catatan Kritis & Analisis Tambahan</div>
               <div style="color: var(--text-primary); font-weight: 500; font-size: clamp(0.9rem, 2.8vw, 0.95rem); line-height: 1.6;">${formatText(fact.funFact)}</div>
             </div>
             
             <div style="margin-top: 10px; opacity: 0.85;">
               <div class="reference-badge" onclick="this.classList.toggle('expanded')" title="Ketuk untuk melihat full referensi">
                 <div class="reference-content">
-                  <span class="reference-text">Referensi: <a href="${fact.sourceUrl || `https://www.google.com/search?q=${encodeURIComponent(fact.source + ' ' + fact.title)}`}" target="_blank" onclick="event.stopPropagation()" title="Buka sumber referensi di tab baru" style="color: #fff; font-weight: 700; text-decoration: none;">${fact.source}</a></span>
+                  <span class="reference-text">Referensi: <a href="${fact.sourceUrl || `https://www.google.com/search?q=${encodeURIComponent(fact.source + ' ' + fact.title)}`}" target="_blank" onclick="event.stopPropagation()" title="Buka sumber referensi di tab baru" style="color: var(--accent-primary); font-weight: 700; text-decoration: none;">${fact.source}</a></span>
                 </div>
                 <svg class="reference-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
