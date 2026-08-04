@@ -1296,183 +1296,137 @@ body {
 
 
 /* ==========================================
-   SITE FOOTER — MULTI-KOLOM KKN PADEPOKAN 13
+   SITE FOOTER — CLEAN MINIMALIST (GOOGLE/MICROSOFT STYLE)
    ========================================== */
 
 .site-footer {
   margin-top: 80px;
   width: 100%;
-  /* Gunakan warna bg sekunder tema — otomatis ikut dark/light mode */
   background: var(--bg-secondary);
-  /* Garis atas: gradien aksen tema */
-  border-top: 2px solid transparent;
-  border-image: var(--accent-gradient) 1;
+  border-top: 1px solid var(--glass-border);
   color: var(--text-secondary);
-}
-
-/* Grid 3 kolom — penuh dari tepi ke tepi, padding sisi saja */
-.footer-grid {
-  width: 100%;
-  padding: 48px 5vw 40px;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr;
-  gap: 48px;
-  align-items: start;
-}
-
-/* ---- Kolom 1: Logo + Brand ---- */
-.footer-brand {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
 }
 
-/* Wrapper logo (Menampung 2 logo) */
-.footer-logo-wrap {
+/* --- Top Section: Social Media --- */
+.footer-top {
   display: flex;
   align-items: center;
-  gap: 16px;
+  padding: 24px 5vw;
+  border-bottom: 1px solid var(--glass-border);
+  gap: 24px;
 }
 
-.footer-logo {
-  height: 64px;
-  width: auto;
-  object-fit: contain;
-  border-radius: 0; /* Remove border-radius for transparent logos */
-}
-
-/* Placeholder sementara sebelum logo diberikan */
-.footer-logo-placeholder {
-  width: 72px;
-  height: 72px;
-  border-radius: 14px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border-highlight);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent-primary);
+.footer-social-title {
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 600;
+  color: var(--text-primary);
   letter-spacing: 0.5px;
-  line-height: 1.2;
-  text-align: center;
 }
 
-.footer-brand-text {
+.footer-social-icons {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.footer-brand-name {
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1.3;
-}
-
-.footer-brand-desc {
-  font-size: 0.83rem;
-  color: var(--text-tertiary);
-  line-height: 1.7;
-  margin: 0;
-}
-
-/* ---- Kolom 2 & 3: Judul kolom ---- */
-.footer-col-title {
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.4px;
-  color: var(--accent-primary);
-  margin: 0 0 16px 0;
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Link media sosial */
-.footer-link {
-  display: inline-flex;
+  gap: 16px;
   align-items: center;
-  gap: 8px;
-  font-size: 0.88rem;
-  font-weight: 500;
+}
+
+.footer-social-icons a {
   color: var(--text-tertiary);
-  text-decoration: none;
-  transition: color 0.2s ease, gap 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: flex;
 }
 
-.footer-link:hover {
+.footer-social-icons a:hover {
   color: var(--text-primary);
-  gap: 12px;
+  transform: translateY(-2px);
 }
 
-.footer-link-instagram:hover {
+.footer-social-icons a:hover .social-icon-ig {
   color: #e1306c;
 }
-
-.footer-link-tiktok:hover {
+.footer-social-icons a:hover .social-icon-tt {
   color: #69c9d0;
 }
 
-/* Teks informasi biasa (bukan link) */
-.footer-text-item {
-  font-size: 0.85rem;
-  color: var(--text-tertiary);
-  line-height: 1.7;
+/* --- Main Section: Logos and Links --- */
+.footer-main-clean {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 5vw;
+  flex-wrap: wrap;
+  gap: 32px;
 }
 
-/* ---- Bar bawah: copyright ---- */
-.footer-bottom {
-  width: 100%;
-  padding: 16px 5vw;
-  border-top: 1px solid var(--glass-border);
+.footer-logos-clean {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 32px;
+}
+
+.footer-logos-clean img {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  /* Pro touch: grayscale logos that colorize on hover untuk kesan elegan */
+  filter: grayscale(100%) opacity(70%); 
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.footer-logos-clean img:hover {
+  filter: grayscale(0%) opacity(100%);
+  transform: scale(1.02);
+}
+
+.footer-links-clean {
+  display: flex;
+  gap: 32px;
   flex-wrap: wrap;
-  font-size: 0.78rem;
+}
+
+.footer-links-clean a {
+  font-size: 0.85rem;
+  font-weight: 500;
   color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-.footer-bottom-dot {
-  opacity: 0.4;
+.footer-links-clean a:hover {
+  color: var(--text-primary);
 }
 
-/* ---- Responsif ---- */
+/* --- Bottom Section: Copyright --- */
+.footer-bottom-clean {
+  padding: 20px 5vw;
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* --- Responsif --- */
 @media (max-width: 768px) {
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    padding: 36px 5vw 28px;
-  }
-  .footer-brand {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 480px) {
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 32px 5vw 24px;
-  }
-  .footer-bottom {
+  .footer-top {
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
-    padding: 14px 5vw;
+    gap: 16px;
   }
-  .footer-bottom-dot { display: none; }
+  
+  .footer-main-clean {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .footer-links-clean {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .footer-logos-clean img {
+    height: 44px;
+  }
 }
 
