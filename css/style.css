@@ -1305,10 +1305,10 @@ body {
 .site-footer {
   margin-top: 80px;
   width: 100%;
-  background: rgba(15, 17, 23, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border-top: 1px solid var(--glass-border);
 }
 
 .footer-bottom-micro {
@@ -1341,8 +1341,8 @@ body {
 .micro-copyright {
   font-size: 0.8rem;
   font-weight: 500;
-  color: #94a3b8;
-  border-left: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-tertiary);
+  border-left: 1px solid var(--glass-border);
   padding-left: 20px;
 }
 
@@ -1353,13 +1353,13 @@ body {
 }
 
 .footer-micro-right a {
-  color: #94a3b8;
+  color: var(--text-tertiary);
   transition: color 0.2s ease, transform 0.2s ease;
   display: flex;
 }
 
 .footer-micro-right a:hover {
-  color: #ffffff;
+  color: var(--text-primary);
   transform: translateY(-2px);
 }
 
@@ -1382,7 +1382,7 @@ body {
   }
   .micro-copyright {
     border-left: none;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid var(--glass-border);
     padding-left: 0;
     padding-top: 16px;
   }
