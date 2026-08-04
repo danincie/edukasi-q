@@ -1323,23 +1323,23 @@ body {
 /* ---- Kolom 1: Logo + Brand ---- */
 .footer-brand {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
+  gap: 20px;
+}
+
+/* Wrapper logo (Menampung 2 logo) */
+.footer-logo-wrap {
+  display: flex;
+  align-items: center;
   gap: 16px;
 }
 
-/* Wrapper logo */
-.footer-logo-wrap {
-  flex-shrink: 0;
-  width: 72px;
-  height: 72px;
-  position: relative;
-}
-
 .footer-logo {
-  width: 72px;
-  height: 72px;
+  height: 64px;
+  width: auto;
   object-fit: contain;
-  border-radius: 14px;
+  border-radius: 0; /* Remove border-radius for transparent logos */
 }
 
 /* Placeholder sementara sebelum logo diberikan */
