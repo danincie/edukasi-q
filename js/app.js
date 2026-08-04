@@ -520,40 +520,8 @@ class EdukasiApp {
      TOAST NOTIFICATION FEEDBACK
      ========================================== */
   showToast(message) {
-    let toast = document.getElementById('edukasi-toast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'edukasi-toast';
-      toast.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%) translateY(100px);
-        background: var(--bg-secondary);
-        color: var(--text-primary);
-        border: 1px solid var(--accent-primary);
-        padding: 14px 24px;
-        border-radius: 999px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        font-weight: 600;
-        font-size: 0.95rem;
-        z-index: 99999;
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        backdrop-filter: blur(12px);
-      `;
-      document.body.appendChild(toast);
-    }
-
-    toast.innerHTML = message;
-    toast.style.transform = 'translateX(-50%) translateY(0)';
-
-    if (this.toastTimeout) clearTimeout(this.toastTimeout);
-    this.toastTimeout = setTimeout(() => {
-      toast.style.transform = 'translateX(-50%) translateY(100px)';
-    }, 3500);
+    // Dinonaktifkan sesuai permintaan: notifikasi (toast) dianggap mengganggu
+    return;
   }
 }
 
